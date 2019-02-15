@@ -15049,6 +15049,7 @@ var YoroiLedgerBridge = function () {
   function YoroiLedgerBridge() {
     _classCallCheck(this, YoroiLedgerBridge);
 
+    // TODO: need to remove EventListeners??, find out
     this.addEventListeners();
   }
 
@@ -15070,6 +15071,163 @@ var YoroiLedgerBridge = function () {
       try {
         await this.makeApp();
         return this.app.getVersion();
+      } finally {
+        this.cleanUp();
+      }
+    }
+
+    /**
+     * @description Returns an object containing the app version.
+     * 
+     * @param {*} replyAction
+     * @returns {Promise<{major:number, minor:number, patch:number, flags:{isDebug:boolean}}>} 
+     *
+     * @example
+     * const { major, minor, patch, flags } = await app.getVersion();
+     */
+
+  }, {
+    key: 'getVersion',
+    value: async function getVersion(replyAction) {
+      try {
+        await this.makeApp();
+        var res = await this.app.getVersion();
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: true,
+          payload: res
+        });
+      } catch (err) {
+        var e = this.ledgerErrToMessage(err);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: false,
+          payload: { error: e.toString() }
+        });
+      } finally {
+        this.cleanUp();
+      }
+    }
+
+    /**
+     * @description Get a public key from the specified BIP 32 path.
+     * 
+     * @param {*} replyAction
+     * @param {*} hdPath : The path indexes. Path must begin with `44'/1815'/n'`, and may be up to 10 indexes long. 
+     * 
+     * @return {Promise<{ publicKey:string, chainCode:string }>} The public key with chaincode for the given path.
+     * 
+     * @example
+     * const { publicKey, chainCode } = await ada.getExtendedPublicKey([ HARDENED + 44, HARDENED + 1815, HARDENED + 1 ]);
+     * 
+     */
+
+  }, {
+    key: 'getExtendedPublicKey',
+    value: async function getExtendedPublicKey(replyAction, hdPath) {
+      try {
+        await this.makeApp();
+        var res = await this.app.getExtendedPublicKey(hdPath);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: true,
+          payload: res
+        });
+      } catch (err) {
+        var e = this.ledgerErrToMessage(err);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: false,
+          payload: { error: e.toString() }
+        });
+      } finally {
+        this.cleanUp();
+      }
+    }
+
+    /**
+     * @description SignTx on device
+     * 
+     * type InputTypeUTxO = {|
+     *   txDataHex: string,
+     *   outputIndex: number,
+     *   path: BIP32Path
+     * |};
+     * 
+     * type OutputTypeAddress = {|
+     *   amountStr: string,
+     *   address58: string
+     * |};
+     * 
+     * type OutputTypeChange = {|
+     *   amountStr: string,
+     *   path: BIP32Path
+     * |};  
+     * 
+     * @param {*} replyAction 
+     * @param {*} inputs : Array<InputTypeUTxO>
+     * @param {*} outputs : Array<OutputTypeAddress | OutputTypeChange>
+     * 
+     * @returns { txHashHex, witnesses }
+     */
+
+  }, {
+    key: 'signTransaction',
+    value: async function signTransaction(replyAction, inputs, outputs) {
+      try {
+        await this.makeApp();
+        var res = await this.app.signTransaction(inputs, outputs);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: true,
+          payload: res
+        });
+      } catch (err) {
+        var e = this.ledgerErrToMessage(err);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: false,
+          payload: { error: e.toString() }
+        });
+      } finally {
+        this.cleanUp();
+      }
+    }
+
+    /**
+     * @description Gets an address from the specified BIP 32 path.
+     * 
+     * @param {*} replyAction 
+     * @param {*} hdPath : The path indexes. Path must begin with `44'/1815'/i'/(0 or 1)/j`, and may be up to 10 indexes long
+     * 
+     * @throws 5001 - The path provided does not have the first 3 indexes hardened or 4th index is not 0 or 1
+     * @throws 5002 - The path provided is less than 5 indexes
+     * @throws 5003 - Some of the indexes is not a number
+     *
+     * @example
+     * const { address } = await ada.deriveAddress([ HARDENED + 44, HARDENED + 1815, HARDENED + 1, 0, 5 ]);
+     * 
+     * @return {Promise<{ address:string }>} The address for the given path.
+     */
+
+  }, {
+    key: 'deriveAddress',
+    value: async function deriveAddress(replyAction, hdPath) {
+      try {
+        await this.makeApp();
+        var res = await this.app.deriveAddress(hdPath);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: true,
+          payload: res
+        });
+      } catch (err) {
+        var e = this.ledgerErrToMessage(err);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: false,
+          payload: { error: e.toString() }
+        });
       } finally {
         this.cleanUp();
       }
@@ -15104,72 +15262,6 @@ var YoroiLedgerBridge = function () {
     key: 'sendMessageToExtension',
     value: function sendMessageToExtension(msg) {
       window.parent.postMessage(msg, '*');
-    }
-  }, {
-    key: 'unlock',
-    value: async function unlock(replyAction, hdPath) {
-      try {
-        await this.makeApp();
-        var res = await this.app.getAddress(hdPath, false, true);
-        this.sendMessageToExtension({
-          action: replyAction,
-          success: true,
-          payload: res
-        });
-      } catch (err) {
-        var e = this.ledgerErrToMessage(err);
-        this.sendMessageToExtension({
-          action: replyAction,
-          success: false,
-          payload: { error: e.toString() }
-        });
-      } finally {
-        this.cleanUp();
-      }
-    }
-  }, {
-    key: 'signTransaction',
-    value: async function signTransaction(replyAction, hdPath, tx) {
-      try {
-        await this.makeApp();
-        var res = await this.app.signTransaction(hdPath, tx);
-        this.sendMessageToExtension({
-          action: replyAction,
-          success: true,
-          payload: res
-        });
-      } catch (err) {
-        var e = this.ledgerErrToMessage(err);
-        this.sendMessageToExtension({
-          action: replyAction,
-          success: false,
-          payload: { error: e.toString() }
-        });
-      } finally {
-        this.cleanUp();
-      }
-    }
-  }, {
-    key: 'signPersonalMessage',
-    value: async function signPersonalMessage(replyAction, hdPath, message) {
-      try {
-        await this.makeApp();
-        var res = await this.app.signPersonalMessage(hdPath, message);
-        this.sendMessageToExtension({
-          action: replyAction,
-          success: true,
-          payload: res
-        });
-      } catch (err) {
-        var e = this.ledgerErrToMessage(err);
-        this.sendMessageToExtension({
-          action: replyAction,
-          success: false,
-          payload: { error: e.toString() }
-        });
-      } finally {
-        this.cleanUp();
-      }
     }
   }, {
     key: 'ledgerErrToMessage',
