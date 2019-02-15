@@ -1,36 +1,36 @@
 {
   "name": "yoroi-extension-ledger-bridge",
   "version": "0.0.1",
-  "description": "yoroi-extension-ledger-bridge",
+  "description": "Yoroi Extension Ledger hardware wallet bridge",
   "author": "EMURGO.io",
   "license": "MIT",
-  "main": "index.js",
+  "main": "",
   "engines": {
     "node": ">=8",
     "npm": ">=6"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "babel-cli": "^6.x",
-    "babel-eslint": "^8.x",
-    "babel-preset-flow": "^6.x",
-    "dotenv": "^5.x",
-    "eslint": "^4.x",
-    "eslint-config-standard": "^11.x",
-    "eslint-plugin-flowtype": "^2.x",
-    "eslint-plugin-import": "^2.x",
-    "eslint-plugin-node": "^6.x",
-    "eslint-plugin-promise": "^3.x",
-    "eslint-plugin-standard": "^3.x",
-    "flow-bin": "*",
-    "gulp": "^3.x",
-    "gulp-babel": "^7.x",
-    "gulp-eslint": "^4.x",
-    "gulp-flowtype": "^1.x",
-    "standard": "*"
-  },
   "scripts": {
+    "start": "gulp",
+    "build": "gulp scripts",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "browser-sync": "^2.24.6",
+    "gulp": "^3.9.1",
+    "source": "0.0.3",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "@ledgerhq/hw-app-eth": "^4.21.0",
+    "@ledgerhq/hw-transport-u2f": "^4.21.0",
+    "babel-runtime": "^6.26.0",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "buffer": "^5.2.0",
+    "ethereumjs-tx": "^1.3.7",
+    "translations": "^2.2.1"
   },
   "repository": {
     "type": "git",
