@@ -14,7 +14,7 @@
       "templateStrings": true,
       "classes": true,
       "jsx": true
-    },
+    }
   },
 
   "env": {
@@ -149,6 +149,6 @@
     "wrap-iife": [2, "any"],
     "yield-star-spacing": [2, "both"],
     "yoda": [2, "never"],
-    "prefer-const": 1,
+    "prefer-const": 1
   }
 }

@@ -19,8 +19,8 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@ledgerhq/hw-app-ada": "4.39.0",
     "@ledgerhq/hw-transport-u2f": "4.39.0",
+    "ledgerhq-hw-app-ada": "git+https://github.com/Emurgo/ledgerjs-cardano.git",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "babelify": "^8.0.0",

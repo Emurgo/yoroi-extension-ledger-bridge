@@ -2,7 +2,7 @@
 
 import 'babel-polyfill'; // this is need but no clear reasion why??
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
-import AdaApp from '@ledgerhq/hw-app-ada';
+import AdaApp from 'ledgerhq-hw-app-ada';
 
 export default class LedgerBridge {
     constructor () {

@@ -7,7 +7,7 @@ const init = async () => {
     const bridge = new YoroiLedgerBridge();
     (bridge) ? onSuccess() : onError();
   } catch(error) {
-    onError();
+    onError(error);
   }
 }
 
