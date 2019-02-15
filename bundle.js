@@ -15246,13 +15246,13 @@ var YoroiLedgerBridge = function () {
           var replyAction = action + '-reply';
           switch (action) {
             case 'ledger-get-version':
-              _this.getVersion(replyAction, params.hdPath);
+              _this.getVersion(replyAction);
               break;
             case 'ledger-get-extended-public-key':
               _this.getExtendedPublicKey(replyAction, params.hdPath);
               break;
             case 'ledger-sign-transaction':
-              _this.signTransaction(replyAction, params.hdPath, params.tx);
+              _this.signTransaction(replyAction, params.inputs, params.outputs);
               break;
             case 'ledger-derive-address':
               _this.deriveAddress(replyAction, params.hdPath);

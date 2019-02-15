@@ -182,13 +182,13 @@ export default class YoroiLedgerBridge {
         const replyAction = `${action}-reply`;
         switch (action) {
           case 'ledger-get-version':
-            this.getVersion(replyAction, params.hdPath)
+            this.getVersion(replyAction)
             break;
           case 'ledger-get-extended-public-key':
             this.getExtendedPublicKey(replyAction, params.hdPath)
             break;
           case 'ledger-sign-transaction':
-            this.signTransaction(replyAction, params.hdPath, params.tx)
+            this.signTransaction(replyAction, params.inputs, params.outputs)
             break;
           case 'ledger-derive-address':
             this.deriveAddress(replyAction, params.hdPath)
