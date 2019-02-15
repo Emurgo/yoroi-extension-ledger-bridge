@@ -15245,14 +15245,17 @@ var YoroiLedgerBridge = function () {
 
           var replyAction = action + '-reply';
           switch (action) {
-            case 'ledger-unlock':
-              _this.unlock(replyAction, params.hdPath);
+            case 'ledger-get-version':
+              _this.getVersion(replyAction, params.hdPath);
+              break;
+            case 'ledger-get-extended-public-key':
+              _this.getExtendedPublicKey(replyAction, params.hdPath);
               break;
             case 'ledger-sign-transaction':
               _this.signTransaction(replyAction, params.hdPath, params.tx);
               break;
-            case 'ledger-sign-personal-message':
-              _this.signPersonalMessage(replyAction, params.hdPath, params.message);
+            case 'ledger-derive-address':
+              _this.deriveAddress(replyAction, params.hdPath);
               break;
           }
         }
