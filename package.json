@@ -1,0 +1,43 @@
+{
+  "name": "yoroi-extension-ledger-bridge",
+  "version": "0.0.1",
+  "description": "yoroi-extension-ledger-bridge",
+  "author": "EMURGO.io",
+  "license": "MIT",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=6"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.x",
+    "babel-eslint": "^8.x",
+    "babel-preset-flow": "^6.x",
+    "dotenv": "^5.x",
+    "eslint": "^4.x",
+    "eslint-config-standard": "^11.x",
+    "eslint-plugin-flowtype": "^2.x",
+    "eslint-plugin-import": "^2.x",
+    "eslint-plugin-node": "^6.x",
+    "eslint-plugin-promise": "^3.x",
+    "eslint-plugin-standard": "^3.x",
+    "flow-bin": "*",
+    "gulp": "^3.x",
+    "gulp-babel": "^7.x",
+    "gulp-eslint": "^4.x",
+    "gulp-flowtype": "^1.x",
+    "standard": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Emurgo/yoroi-extension-ledger-bridge"
+  },
+  "bugs": {
+    "url": "https://github.com/Emurgo/yoroi-extension-ledger-bridge/issues",
+    "email": "support@emurgo.io"
+  }
+}
