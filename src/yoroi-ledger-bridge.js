@@ -1,10 +1,8 @@
 'use strict'
 
-require('buffer')
-
-import TransportU2F from '@ledgerhq/hw-transport-u2f'
-import LedgerEth from '@ledgerhq/hw-app-eth'
-import { translateRaw } from 'translations'
+import 'babel-polyfill'; // this is need but no clear reasion why??
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import AdaApp from '@ledgerhq/hw-app-ada';
 
 export default class LedgerBridge {
     constructor () {
@@ -37,7 +35,7 @@ export default class LedgerBridge {
 
     async makeApp () {
         this.transport = await TransportU2F.create()
-        this.app = new LedgerEth(this.transport)
+        this.app = new AdaApp(this.transport)
     }
 
     cleanUp () {
@@ -124,7 +122,7 @@ export default class LedgerBridge {
         if (isU2FError(err)) {
           // Timeout
           if (err.metaData.code === 5) {
-            return translateRaw('LEDGER_TIMEOUT')
+            return 'LEDGER_TIMEOUT'
           }
 
           return err.metaData.type
@@ -133,25 +131,25 @@ export default class LedgerBridge {
         if (isStringError(err)) {
           // Wrong app logged into
           if (err.includes('6804')) {
-            return translateRaw('LEDGER_WRONG_APP')
+            return 'LEDGER_WRONG_APP';
           }
           // Ledger locked
           if (err.includes('6801')) {
-            return translateRaw('LEDGER_LOCKED')
+            return 'LEDGER_LOCKED';
           }
 
-          return err
+          return err;
         }
 
         if (isErrorWithId(err)) {
           // Browser doesn't support U2F
           if (err.message.includes('U2F not supported')) {
-            return translateRaw('U2F_NOT_SUPPORTED')
+            return 'U2F_NOT_SUPPORTED';
           }
         }
 
         // Other
-        return err.toString()
+        return err.toString();
     }
 
 }
