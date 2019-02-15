@@ -1,33 +1,24 @@
 const {EventEmitter} = require('events')
 const HDKey = require('hdkey')
-const ethUtil = require('ethereumjs-util')
-const sigUtil = require('eth-sig-util')
 
-const hdPathString = `m/44'/60'/0'`
+// see SLIP-0044
+const coinType = 1815; // Cardano
+
+const hdPathString = `m/44'/${coinType}'/0'`
 const type = 'Ledger Hardware'
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge/'
 const pathBase = 'm'
-const MAX_INDEX = 1000
-const NETWORK_API_URLS = {
-  ropsten: 'http://api-ropsten.etherscan.io',
-  kovan: 'http://api-kovan.etherscan.io',
-  rinkeby: 'https://api-rinkeby.etherscan.io',
-  mainnet: 'https://api.etherscan.io',
-}
+const MAX_INDEX = 1000 // TBD do we want this?
 
 class LedgerBridgeKeyring extends EventEmitter {
   constructor (opts = {}) {
     super()
     this.bridgeUrl = null
     this.type = type
-    this.page = 0
-    this.perPage = 5
-    this.unlockedAccount = 0
     this.hdk = new HDKey()
     this.paths = {}
     this.iframe = null
-    this.network = 'mainnet'
-    this.implementFullBIP44 = false
+    this.implementFullBIP44 = true
     this.deserialize(opts)
     this._setupIframe()
   }
@@ -45,7 +36,7 @@ class LedgerBridgeKeyring extends EventEmitter {
     this.hdPath = opts.hdPath || hdPathString
     this.bridgeUrl = opts.bridgeUrl || BRIDGE_URL
     this.accounts = opts.accounts || []
-    this.implementFullBIP44 = opts.implementFullBIP44 || false
+    this.implementFullBIP44 = opts.implementFullBIP44 || true
     return Promise.resolve()
   }
 
@@ -65,70 +56,35 @@ class LedgerBridgeKeyring extends EventEmitter {
     this.hdPath = hdPath
   }
 
-  unlock (hdPath) {
-    if (this.isUnlocked() && !hdPath) return Promise.resolve('already unlocked')
-    const path = hdPath ? this._toLedgerPath(hdPath) : this.hdPath
+  /**
+   * Sign a transaction and pass it to the callback
+   * Callback will verify tx and populate any required fields
+   */
+  signTransaction (tx, callback) {
     return new Promise((resolve, reject) => {
-      this._sendMessage({
-        action: 'ledger-unlock',
-        params: {
-          hdPath: path,
-        },
-      },
-      ({success, payload}) => {
-        if (success) {
-          this.hdk.publicKey = new Buffer(payload.publicKey, 'hex')
-          this.hdk.chainCode = new Buffer(payload.chainCode, 'hex')
-          resolve(payload.address)
+        let hdPath
+        if (this._isBIP44()) {
+          hdPath = this._getPathForIndex(this.unlockedAccount)
         } else {
-          reject(payload.error || 'Unknown error')
+          hdPath = this._toLedgerPath(this._pathFromAddress(address))
         }
-      })
-    })
-  }
 
-  // tx is an instance of the ethereumjs-transaction class.
-  signTransaction (address, tx) {
-    return new Promise((resolve, reject) => {
-      this.unlock()
-        .then(_ => {
-
-          tx.v = ethUtil.bufferToHex(tx.getChainId())
-          tx.r = '0x00'
-          tx.s = '0x00'
-
-          let hdPath
-          if (this._isBIP44()) {
-            hdPath = this._getPathForIndex(this.unlockedAccount)
-          } else {
-            hdPath = this._toLedgerPath(this._pathFromAddress(address))
-          }
-
-          this._sendMessage({
-            action: 'ledger-sign-transaction',
-            params: {
-              tx: tx.serialize().toString('hex'),
-              hdPath,
-            },
+        this._sendMessage({
+          action: 'ledger-sign-transaction',
+          params: {
+            tx: tx.serialize().toString('hex'),
+            hdPath,
           },
-          ({success, payload}) => {
-            if (success) {
-
-              tx.v = Buffer.from(payload.v, 'hex')
-              tx.r = Buffer.from(payload.r, 'hex')
-              tx.s = Buffer.from(payload.s, 'hex')
-
-              const valid = tx.verifySignature()
-              if (valid) {
-                resolve(tx)
-              } else {
-                reject(new Error('Ledger: The transaction signature is not valid'))
-              }
+        },
+        ({success, payload}) => {
+          if (success) {
+            if (callback(payload, tx)) {
+              resolve(tx);
             } else {
-              reject(new Error(payload.error || 'Ledger: Unknown error while signing transaction'))
+              reject(new Error('Ledger: The transaction verification failed'))
             }
-          })
-      })
+          }
+        })
     })
   }
 
@@ -328,31 +284,16 @@ class LedgerBridgeKeyring extends EventEmitter {
 
   _getPathForIndex (index) {
     // Check if the path is BIP 44 (Ledger Live)
-    return this._isBIP44() ? `m/44'/60'/${index}'/0/0` : `${this.hdPath}/${index}`
+    return this._isBIP44() ? `m/44'/${coinType}'/${index}'/0/0` : `${this.hdPath}/${index}`
   }
 
   _isBIP44 () {
-    return this.hdPath === `m/44'/60'/0'/0/0`
+    return this.hdPath === `m/44'/${coinType}'/0'/0/0`
   }
 
   _toLedgerPath (path) {
     return path.toString().replace('m/', '')
   }
-
-  async _hasPreviousTransactions (address) {
-    const apiUrl = this._getApiUrl()
-    const response = await fetch(`${apiUrl}/api?module=account&action=txlist&address=${address}&tag=latest&page=1&offset=1`)
-    const parsedResponse = await response.json()
-    if (parsedResponse.status !== '0' && parsedResponse.result.length > 0) {
-      return true
-    }
-    return false
-  }
-
-  _getApiUrl () {
-    return NETWORK_API_URLS[this.network] ? NETWORK_API_URLS[this.network] : NETWORK_API_URLS['mainnet']
-  }
-
 }
 
 LedgerBridgeKeyring.type = type
