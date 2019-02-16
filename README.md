@@ -9,3 +9,5 @@ To connect to the Ledger device, we need to use a u2f connection (WebUSB is reje
 We host [ledgerjs-cardano](https://github.com/vacuumlabs/ledgerjs-cardano) on the `gh-pages` branch the interface to connect to this page on the `master` branch.
 
 To use this interface, simply add the `master` branch as a dependency to your `node` project.
+
+**Note**: Assumes wallet is BIP44 compliant

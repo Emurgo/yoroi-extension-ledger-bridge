@@ -6,10 +6,8 @@ const coinType = 1815; // Cardano
 
 const hdPathString = `m/44'/${coinType}'/0'`
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge/'
-const pathBase = 'm'
-const MAX_INDEX = 1000 // TBD do we want this?
 
-class LedgerBridgeKeyring extends EventEmitter {
+class LedgerBridge extends EventEmitter {
   constructor (opts = {}) {
     super()
     this.bridgeUrl = null
@@ -18,7 +16,6 @@ class LedgerBridgeKeyring extends EventEmitter {
     this.perPage = 5
 
     this.hdk = new HDKey()
-    this.paths = {}
     this.iframe = null
     this.deserialize(opts)
     this._setupIframe()
@@ -38,6 +35,10 @@ class LedgerBridgeKeyring extends EventEmitter {
     this.accounts = opts.accounts || []
     return Promise.resolve()
   }
+
+  // =====================
+  //   Account Selection
+  // =====================
 
   isUnlocked () {
     return !!(this.hdk && this.hdk.publicKey)
@@ -72,7 +73,6 @@ class LedgerBridgeKeyring extends EventEmitter {
     this.accounts = []
     this.page = 0
     this.unlockedAccount = 0
-    this.paths = {}
     this.hdk = new HDKey()
   }
 
@@ -199,11 +199,7 @@ class LedgerBridgeKeyring extends EventEmitter {
   // ====================
 
   _getHdPath () {
-    if (this._isBIP44()) {
       return this._getPathForIndex(this.unlockedAccount);
-    } else {
-      return this._toLedgerPath(this._pathFromAddress(address));
-    }
   }
 
   __getPage (increment) {
@@ -246,59 +242,9 @@ class LedgerBridgeKeyring extends EventEmitter {
     return accounts
   }
 
-  _getAccountsLegacy (from, to) {
-    const accounts = []
-
-    for (let i = from; i < to; i++) {
-      const address = this._addressFromIndex(pathBase, i)
-      accounts.push({
-        address: address,
-        balance: null,
-        index: i,
-      })
-      this.paths[ethUtil.toChecksumAddress(address)] = i
-    }
-    return accounts
-  }
-
-  _addressFromIndex (pathBase, i) {
-    const dkey = this.hdk.derive(`${pathBase}/${i}`)
-    const address = ethUtil
-      .publicToAddress(dkey.publicKey, true)
-      .toString('hex')
-    return ethUtil.toChecksumAddress(address)
-  }
-
-  _pathFromAddress (address) {
-    const checksummedAddress = ethUtil.toChecksumAddress(address)
-    let index = this.paths[checksummedAddress]
-    if (typeof index === 'undefined') {
-      for (let i = 0; i < MAX_INDEX; i++) {
-        if (checksummedAddress === this._addressFromIndex(pathBase, i)) {
-          index = i
-          break
-        }
-      }
-    }
-
-    if (typeof index === 'undefined') {
-      throw new Error('Unknown address')
-    }
-    return this._getPathForIndex(index)
-  }
-
   _getPathForIndex (index) {
-    // Check if the path is BIP 44 (Ledger Live)
-    return this._isBIP44() ? `m/44'/${coinType}'/${index}'/0/0` : `${this.hdPath}/${index}`
-  }
-
-  _isBIP44 () {
-    return this.hdPath === `m/44'/${coinType}'/0'/0/0`
-  }
-
-  _toLedgerPath (path) {
-    return path.toString().replace('m/', '')
+    return `m/44'/${coinType}'/${index}'/0/0`
   }
 }
 
-module.exports = LedgerBridgeKeyring // TBD
+module.exports = LedgerBridge
