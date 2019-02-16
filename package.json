@@ -4,6 +4,8 @@
   "description": "Interface for interacting through u2f for the Cardano Ledger app",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint *.js",
+    "flow": "flow ."
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,12 @@
     "hdkey": "0.8.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.0",
-    "babel-runtime": "^6.26.0"
+    "@babel/runtime": "7.1.5",
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-eslint": "^10.0.1",
+    "eslint-plugin-flowtype": "^3.4.2",
+    "eslint": "5.8.0",
+    "flow-bin": "^0.93.0"
   }
 }
