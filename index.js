@@ -227,21 +227,14 @@ class LedgerBridge extends EventEmitter {
     });
   }
 
-  // ================
-  //   Bridge Setup
-  // ================
-
-  _getOrigin (): string {
-    const tmp = this.bridgeUrl.split('/');
-    tmp.splice(-1, 1);
-    return tmp.join('/');
-  }
-
-  _sendMessage (msg: MessageType, cb: Function) {
+  _sendMessage (
+    msg: MessageType,
+    cb: Function
+  ) {
     msg.target = 'LEDGER-IFRAME';
     this.iframe.contentWindow.postMessage(msg, '*');
     window.addEventListener('message', ({ origin, data }) => {
-      if (origin !== this._getOrigin()) return false;
+      if (origin !== _getOrigin(this.bridgeUrl)) return false;
       if (data && data.action && data.action === `${msg.action}-reply`) {
         cb(data);
       }
@@ -249,9 +242,15 @@ class LedgerBridge extends EventEmitter {
   }
 }
 
-// ====================
-//   Helper Functions
-// ====================
+// ================
+//   Bridge Setup
+// ================
+
+function _getOrigin (bridgeUrl: string): string {
+  const tmp = bridgeUrl.split('/');
+  tmp.splice(-1, 1);
+  return tmp.join('/');
+}
 
 function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
   const iframe = document.createElement('iframe');
@@ -263,6 +262,10 @@ function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
 
   return iframe;
 }
+
+// ====================
+//   Helper Functions
+// ====================
 
 function _getHdPath(account: number): string {
     return _getPathForIndex(account);
