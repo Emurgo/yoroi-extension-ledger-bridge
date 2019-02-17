@@ -1,6 +1,8 @@
 [ignore]
+.*/.git/.*
 
 [include]
+.*/.*
 
 [libs]
 
