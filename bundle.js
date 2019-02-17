@@ -15049,30 +15049,18 @@ var YoroiLedgerBridge = function () {
   function YoroiLedgerBridge() {
     _classCallCheck(this, YoroiLedgerBridge);
 
-    // TODO: need to remove EventListeners??, find out
     this.addEventListeners();
   }
 
   _createClass(YoroiLedgerBridge, [{
-    key: 'makeApp',
-    value: async function makeApp() {
-      this.transport = await _hwTransportU2f2.default.create();
-      this.app = new _Ada2.default(this.transport);
-    }
-  }, {
-    key: 'cleanUp',
-    value: function cleanUp() {
-      this.app = null;
-      this.transport.close();
-    }
-  }, {
     key: 'getConnectedDeviceVersion',
     value: async function getConnectedDeviceVersion() {
+      var transport = await _hwTransportU2f2.default.create();
       try {
-        await this.makeApp();
-        return this.app.getVersion();
+        var adaApp = new _Ada2.default(transport);
+        return adaApp.getVersion();
       } finally {
-        this.cleanUp();
+        transport.close();
       }
     }
 
@@ -15089,9 +15077,10 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'getVersion',
     value: async function getVersion(replyAction) {
+      var transport = await _hwTransportU2f2.default.create();
       try {
-        await this.makeApp();
-        var res = await this.app.getVersion();
+        var adaApp = new _Ada2.default(transport);
+        var res = await adaApp.getVersion();
         this.sendMessageToExtension({
           action: replyAction,
           success: true,
@@ -15105,7 +15094,7 @@ var YoroiLedgerBridge = function () {
           payload: { error: e.toString() }
         });
       } finally {
-        this.cleanUp();
+        transport.close();
       }
     }
 
@@ -15125,9 +15114,10 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'getExtendedPublicKey',
     value: async function getExtendedPublicKey(replyAction, hdPath) {
+      var transport = await _hwTransportU2f2.default.create();
       try {
-        await this.makeApp();
-        var res = await this.app.getExtendedPublicKey(hdPath);
+        var adaApp = new _Ada2.default(transport);
+        var res = await adaApp.getExtendedPublicKey(hdPath);
         this.sendMessageToExtension({
           action: replyAction,
           success: true,
@@ -15141,32 +15131,12 @@ var YoroiLedgerBridge = function () {
           payload: { error: e.toString() }
         });
       } finally {
-        this.cleanUp();
+        transport.close();
       }
     }
 
     /**
      * @description SignTx on device
-     * 
-     * type InputTypeUTxO = {|
-     *   txDataHex: string,
-     *   outputIndex: number,
-     *   path: BIP32Path
-     * |};
-     * 
-     * type OutputTypeAddress = {|
-     *   amountStr: string,
-     *   address58: string
-     * |};
-     * 
-     * type OutputTypeChange = {|
-     *   amountStr: string,
-     *   path: BIP32Path
-     * |};  
-     * 
-     * @param {*} replyAction 
-     * @param {*} inputs : Array<InputTypeUTxO>
-     * @param {*} outputs : Array<OutputTypeAddress | OutputTypeChange>
      * 
      * @returns { txHashHex, witnesses }
      */
@@ -15174,9 +15144,10 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'signTransaction',
     value: async function signTransaction(replyAction, inputs, outputs) {
+      var transport = await _hwTransportU2f2.default.create();
       try {
-        await this.makeApp();
-        var res = await this.app.signTransaction(inputs, outputs);
+        var adaApp = new _Ada2.default(transport);
+        var res = await adaApp.signTransaction(inputs, outputs);
         this.sendMessageToExtension({
           action: replyAction,
           success: true,
@@ -15190,7 +15161,7 @@ var YoroiLedgerBridge = function () {
           payload: { error: e.toString() }
         });
       } finally {
-        this.cleanUp();
+        transport.close();
       }
     }
 
@@ -15207,15 +15178,16 @@ var YoroiLedgerBridge = function () {
      * @example
      * const { address } = await ada.deriveAddress([ HARDENED + 44, HARDENED + 1815, HARDENED + 1, 0, 5 ]);
      * 
-     * @return {Promise<{ address:string }>} The address for the given path.
+     * @return {Promise<{ address58:string }>} The address for the given path.
      */
 
   }, {
     key: 'deriveAddress',
     value: async function deriveAddress(replyAction, hdPath) {
+      var transport = await _hwTransportU2f2.default.create();
       try {
-        await this.makeApp();
-        var res = await this.app.deriveAddress(hdPath);
+        var adaApp = new _Ada2.default(transport);
+        var res = await adaApp.deriveAddress(hdPath);
         this.sendMessageToExtension({
           action: replyAction,
           success: true,
@@ -15229,7 +15201,7 @@ var YoroiLedgerBridge = function () {
           payload: { error: e.toString() }
         });
       } finally {
-        this.cleanUp();
+        transport.close();
       }
     }
   }, {
@@ -15240,11 +15212,11 @@ var YoroiLedgerBridge = function () {
       window.addEventListener('message', async function (e) {
         if (e && e.data && e.data.target === 'LEDGER-IFRAME') {
           var _e$data = e.data,
-              action = _e$data.action,
+              _action = _e$data.action,
               params = _e$data.params;
 
-          var replyAction = action + '-reply';
-          switch (action) {
+          var replyAction = _action + '-reply';
+          switch (_action) {
             case 'ledger-get-version':
               _this.getVersion(replyAction);
               break;
