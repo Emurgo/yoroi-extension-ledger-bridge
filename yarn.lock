@@ -3241,9 +3241,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-"ledgerhq@git+https://github.com/Emurgo/ledgerjs-cardano.git ":
+"ledgerhq@git+https://github.com/Emurgo/ledgerjs-cardano.git":
   version "0.0.0"
-  resolved "git+https://github.com/Emurgo/ledgerjs-cardano.git #20f682cef5b48a2bab40b527472d5fe542162bd8"
+  resolved "git+https://github.com/Emurgo/ledgerjs-cardano.git#20f682cef5b48a2bab40b527472d5fe542162bd8"
   dependencies:
     base-x "^3.0.5"
 
