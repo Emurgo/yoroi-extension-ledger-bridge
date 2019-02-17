@@ -8,7 +8,8 @@ import type {
   BIP32Path,
   InputTypeUTxO,
   OutputTypeAddress,
-  OutputTypeChange
+  OutputTypeChange,
+  GetVersionResponse
 } from '../node_modules/ledgerhq/hw-app-ada/lib/Ada.js';
 
 type MessageType = {
@@ -23,7 +24,7 @@ export default class YoroiLedgerBridge {
     this.addEventListeners();
   }
 
-  async getConnectedDeviceVersion() {
+  async getConnectedDeviceVersion(): Promise<GetVersionResponse> {
     const transport = await TransportU2F.create();
     try {
       const adaApp = new AdaApp(transport);
