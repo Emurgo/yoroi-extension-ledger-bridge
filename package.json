@@ -2,7 +2,7 @@
   "name": "yoroi-extension-ledger-bridge",
   "version": "0.1.0",
   "description": "Interface for interacting through u2f for the Cardano Ledger app",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "eslint": "eslint *.js",
     "flow": "flow .",
