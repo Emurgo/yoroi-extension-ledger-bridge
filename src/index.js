@@ -11,6 +11,8 @@ import type {
   SignTransactionResponse
 } from './adaTypes';
 
+const HARDENED = 0x80000000;
+
 const {EventEmitter} = require('events');
 
 // see SLIP-0044
@@ -164,6 +166,9 @@ function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
 
 /** See BIP44 for explanation
  * https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
+ * 
+ * Ledger (according to current security rules) denies any derivation path which does not start with
+ *  `[HD+44, HD+1815, HD+(small) account number]`
  */
 function getPathHelper (
   account: number,
@@ -171,9 +176,9 @@ function getPathHelper (
   address: number
 ): BIP32Path {
   return [
-    44,
-    coinType,
-    account,
+    HARDENED + 44,
+    HARDENED + coinType,
+    HARDENED + account,
     change ? 1 : 0,
     address
   ];
