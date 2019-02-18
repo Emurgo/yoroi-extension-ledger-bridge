@@ -11,3 +11,10 @@ We host [ledgerjs-cardano](https://github.com/vacuumlabs/ledgerjs-cardano) on th
 To use this interface, simply add the `master` branch as a dependency to your `node` project.
 
 **Note**: Assumes wallet is BIP44 compliant
+
+## Build
+
+```
+yarn install
+yarn build
+```

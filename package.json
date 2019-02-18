@@ -2,10 +2,13 @@
   "name": "yoroi-extension-ledger-bridge",
   "version": "0.1.0",
   "description": "Interface for interacting through u2f for the Cardano Ledger app",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "eslint": "eslint *.js",
-    "flow": "flow ."
+    "flow": "flow .",
+    "build-js": "babel src/ -d lib",
+    "build-flow": "flow-copy-source src lib",
+    "build": "yarn build-js && yarn build-flow"
   },
   "repository": {
     "type": "git",
@@ -16,19 +19,23 @@
     "ledger",
     "yoroi"
   ],
+  "files": [
+    "lib"
+  ],
   "author": "EMURGO",
   "license": "MIT",
   "dependencies": {
-    "events": "^2.0.0",
-    "hdkey": "0.8.0"
+    "events": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/runtime": "7.1.5",
     "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
     "@babel/preset-flow": "7.0.0",
+    "@babel/runtime": "7.1.5",
     "babel-eslint": "^10.0.1",
-    "eslint-plugin-flowtype": "^3.4.2",
     "eslint": "5.8.0",
-    "flow-bin": "^0.93.0"
+    "eslint-plugin-flowtype": "^3.4.2",
+    "flow-bin": "^0.93.0",
+    "flow-copy-source": "^2.0.3"
   }
 }
