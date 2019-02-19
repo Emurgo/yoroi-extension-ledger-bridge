@@ -15006,17 +15006,11 @@ var init = async function init() {
 };
 
 var onSuccess = async function onSuccess(bridge) {
-  console.log('Yoroi Extension Ledger hardware wallet bridge initialized...');
-  try {
-    var deviceVersion = await bridge.getConnectedDeviceVersion();
-    console.info('Connected Ledger device version: ' + JSON.stringify(deviceVersion));
-  } catch (error) {
-    console.info('No Ledger Nano S device is connected to system USB port');
-  }
+  console.log('[YOROI-LEDGER-BRIDGE] initialized...');
 };
 
 var onError = function onError(error) {
-  console.error('ERROR: Yoroi Extension Ledger hardware wallet bridge initialization failed!!!\n' + error);
+  console.error('[YOROI-LEDGER-BRIDGE] ERROR: initialization failed!!!\n' + error);
 };
 
 init();
@@ -15054,29 +15048,18 @@ var YoroiLedgerBridge = function () {
     this.addEventListeners();
   }
 
+  /**
+   * @description Returns an object containing the app version.
+   * 
+   * @param {*} replyAction
+   * @returns {Promise<{major:number, minor:number, patch:number, flags:{isDebug:boolean}}>} 
+   *
+   * @example
+   * const { major, minor, patch, flags } = await app.getVersion();
+   */
+
+
   _createClass(YoroiLedgerBridge, [{
-    key: 'getConnectedDeviceVersion',
-    value: async function getConnectedDeviceVersion() {
-      var transport = await _hwTransportU2f2.default.create();
-      try {
-        var adaApp = new _Ada2.default(transport);
-        return adaApp.getVersion();
-      } finally {
-        transport.close();
-      }
-    }
-
-    /**
-     * @description Returns an object containing the app version.
-     * 
-     * @param {*} replyAction
-     * @returns {Promise<{major:number, minor:number, patch:number, flags:{isDebug:boolean}}>} 
-     *
-     * @example
-     * const { major, minor, patch, flags } = await app.getVersion();
-     */
-
-  }, {
     key: 'getVersion',
     value: async function getVersion(replyAction) {
       var transport = await _hwTransportU2f2.default.create();
