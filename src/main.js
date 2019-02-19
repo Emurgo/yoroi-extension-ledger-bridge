@@ -16,17 +16,11 @@ const init = async () => {
 }
 
 const onSuccess = async (bridge) => {
-  console.log('Yoroi Extension Ledger hardware wallet bridge initialized...');
-  try {
-    const deviceVersion = await bridge.getConnectedDeviceVersion();
-    console.info(`Connected Ledger device version: ${JSON.stringify(deviceVersion)}`);
-  } catch (error) {
-    console.info('No Ledger Nano S device is connected to system USB port');
-  }
+  console.log('[YOROI-LEDGER-BRIDGE] initialized...');
 }
 
 const onError = (error) => {
-  console.error(`ERROR: Yoroi Extension Ledger hardware wallet bridge initialization failed!!!\n${error}`);
+  console.error(`[YOROI-LEDGER-BRIDGE] ERROR: initialization failed!!!\n${error}`);
 }
 
 init();

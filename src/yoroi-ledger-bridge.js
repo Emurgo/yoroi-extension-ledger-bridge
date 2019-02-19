@@ -26,16 +26,6 @@ export default class YoroiLedgerBridge {
     this.addEventListeners();
   }
 
-  async getConnectedDeviceVersion(): Promise<GetVersionResponse> {
-    const transport = await TransportU2F.create();
-    try {
-      const adaApp = new AdaApp(transport);
-      return adaApp.getVersion();
-    } finally {
-      transport.close(); 
-    }
-  }
-
   /**
    * @description Returns an object containing the app version.
    * 
