@@ -18,7 +18,7 @@ const {EventEmitter} = require('events');
 // see SLIP-0044
 const coinType = 1815; // Cardano
 
-const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge/';
+const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge';
 
 type MessageType = {
   target?: string,
