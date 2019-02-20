@@ -1,5 +1,4 @@
 // @flow
-'use strict'
 
 import 'babel-polyfill'; // this is need but no clear reasion why??
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
@@ -24,6 +23,21 @@ export default class YoroiLedgerBridge {
 
   constructor () {
     this.addEventListeners();
+  }
+
+  /**
+   * @description Just to testing connectiong, result is not sent to iframe invoker
+   * 
+   * @returns {Promise<{major:number, minor:number, patch:number, flags:{isDebug:boolean}}>}
+   */
+  async getConnectedDeviceVersion(): Promise<GetVersionResponse> {
+    const transport = await TransportU2F.create();
+    try {
+      const adaApp = new AdaApp(transport);
+      return adaApp.getVersion();
+    } finally {
+      transport.close(); 
+    }
   }
 
   /**
