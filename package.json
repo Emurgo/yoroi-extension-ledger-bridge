@@ -4,7 +4,7 @@
   "description": "Interface for interacting through u2f for the Cardano Ledger app",
   "main": "lib/index.js",
   "scripts": {
-    "eslint": "eslint *.js",
+    "eslint": "eslint .",
     "flow": "flow .",
     "build-js": "babel src/ -d lib",
     "build-flow": "flow-copy-source src lib",
