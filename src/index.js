@@ -19,6 +19,10 @@ const {EventEmitter} = require('events');
 const coinType = 1815; // Cardano
 
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge';
+<<<<<<< HEAD
+=======
+const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
+>>>>>>> 8ced21be53035f4da845e81097da4d155a719933
 
 type MessageType = {
   target?: string,
@@ -128,7 +132,7 @@ class LedgerBridge extends EventEmitter {
     msg: MessageType,
     cb: ({ success: boolean, payload: any}) => void
   ) {
-    msg.target = 'LEDGER-IFRAME';
+    msg.target = TARGET_IFRAME_NAME;
     this.iframe.contentWindow.postMessage(msg, '*');
     window.addEventListener('message', ({ origin, data }) => {
       if (origin !== _getOrigin(this.bridgeUrl)) return false;
