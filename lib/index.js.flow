@@ -31,14 +31,13 @@ class LedgerBridge extends EventEmitter {
 
   bridgeUrl: string;
   iframe: HTMLIFrameElement;
-  bridgeUrl: string;
   
   /**
    * Use `bridgeOverride` to use this library with your own website
    */
-  constructor (bridgeOverride: ?string = null) {
+  constructor (bridgeOverride: string = BRIDGE_URL) {
     super();
-    this.bridgeUrl = bridgeOverride || BRIDGE_URL;
+    this.bridgeUrl = bridgeOverride;
     this.iframe = _setupIframe(this.bridgeUrl);
   }
 
