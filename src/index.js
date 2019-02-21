@@ -11,12 +11,13 @@ import type {
   SignTransactionResponse
 } from './adaTypes';
 
+import EventEmitter from 'events';
+
+// https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
 const HARDENED = 0x80000000;
 
-const {EventEmitter} = require('events');
-
-// see SLIP-0044
-const coinType = 1815; // Cardano
+// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
+const COIN_TYPE = 1815; // Cardano
 
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge';
 const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
@@ -27,7 +28,7 @@ type MessageType = {
   params: any
 };
 
-class LedgerBridge extends EventEmitter {
+export class LedgerBridge extends EventEmitter {
 
   bridgeUrl: string;
   iframe: HTMLIFrameElement;
@@ -164,24 +165,26 @@ function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
 //   Helper Functions
 // ====================
 
-/** See BIP44 for explanation
+/**
+ * See BIP44 for explanation
  * https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
- * 
  * Ledger (according to current security rules) denies any derivation path which does not start with
  *  `[HD+44, HD+1815, HD+(small) account number]`
+ * 
+ * @param {*} account 
+ * @param {*} change 
+ * @param {*} address 
  */
-function getPathHelper (
+export function makeCardanoBIP44Path (
   account: number,
   change: boolean,
   address: number
 ): BIP32Path {
   return [
     HARDENED + 44,
-    HARDENED + coinType,
+    HARDENED + COIN_TYPE,
     HARDENED + account,
     change ? 1 : 0,
     address
   ];
 }
-
-module.exports = LedgerBridge
