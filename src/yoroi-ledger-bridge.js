@@ -3,14 +3,14 @@
 
 import 'babel-polyfill'; // this is need but no clear reasion why??
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
-import AdaApp from '../node_modules/ledgerhq/hw-app-ada/lib/Ada.js';
+import AdaApp from '@cardano-foundation/ledgerjs-hw-app-cardano';
 import type {
   BIP32Path,
   InputTypeUTxO,
   OutputTypeAddress,
   OutputTypeChange,
   GetVersionResponse
-} from '../node_modules/ledgerhq/hw-app-ada/lib/Ada.js';
+} from '@cardano-foundation/ledgerjs-hw-app-cardano';
 
 type MessageType = {
   action: string,
