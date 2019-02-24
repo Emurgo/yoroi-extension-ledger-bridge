@@ -90,6 +90,15 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@cardano-foundation/ledgerjs-hw-app-cardano@file:modules/ledgerjs-hw-app-cardano":
+  version "1.0.0"
+  dependencies:
+    "@ledgerhq/hw-transport" "^4.35.0"
+    babel-polyfill "^6.26.0"
+    babel-runtime "^6.26.0"
+    base-x "^3.0.5"
+    node-int64 "^0.4.0"
+
 "@ledgerhq/devices@^4.39.0":
   version "4.39.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.39.0.tgz#47d23a1a58004da162e007e0c456ab2119038c7d"
@@ -111,7 +120,7 @@
     "@ledgerhq/hw-transport" "^4.39.0"
     u2f-api "0.2.7"
 
-"@ledgerhq/hw-transport@^4.39.0":
+"@ledgerhq/hw-transport@^4.35.0", "@ledgerhq/hw-transport@^4.39.0":
   version "4.39.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.39.0.tgz#602c6ea3fef56d1df205274ea742b4cf85613f6c"
   integrity sha512-XkVAy2SFRDdE3qQGGVxB7RQdsdIx1fcoRNReU7NQXK59fYqxue+ZoiGtynEoHq9RKMg8EBG2kBXSVEh1iPdOlA==
@@ -3241,12 +3250,6 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-"ledgerhq@git+https://github.com/Emurgo/ledgerjs-cardano.git":
-  version "0.0.0"
-  resolved "git+https://github.com/Emurgo/ledgerjs-cardano.git#20f682cef5b48a2bab40b527472d5fe542162bd8"
-  dependencies:
-    base-x "^3.0.5"
-
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.3.0.tgz#3b09924edf9f083c0490fdd4c0bc4421e04764ee"
@@ -3697,6 +3700,11 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
+
+node-int64@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
+  integrity sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=
 
 node-pre-gyp@^0.10.0:
   version "0.10.3"
