@@ -171,7 +171,7 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@cardano-foundation/ledgerjs-hw-app-cardano@file:modules/ledgerjs-hw-app-cardano":
+"@cardano-foundation/ledgerjs-hw-app-cardano@file:ledgerjs-hw-app-cardano":
   version "1.0.0"
   dependencies:
     "@ledgerhq/hw-transport" "^4.35.0"
