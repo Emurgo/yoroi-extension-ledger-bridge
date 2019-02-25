@@ -24,11 +24,11 @@ const init = async () => {
 }
 
 const onSuccess = async (bridge) => {
-  console.log('[YOROI-LEDGER-BRIDGE] initialized...');
+  console.info('[YOROI-LB] initialized...');
 }
 
 const onError = (error) => {
-  console.error(`[YOROI-LEDGER-BRIDGE] ERROR: initialization failed!!!\n${error}`);
+  console.error(`[YOROI-LB] ERROR: initialization failed!!!\n${error}`);
 }
 
 /**
@@ -37,11 +37,11 @@ const onError = (error) => {
 const logConnectedDeviceVersion = async () => {
   try {
     const deviceVersion = await bridge.getConnectedDeviceVersion();
-    console.info('[YOROI-LEDGER-BRIDGE] Connected Ledger device version: '
+    console.info('[YOROI-LB] Connected Ledger device version: '
       + JSON.stringify(deviceVersion, null , 2));
   } catch (error) {
     console.error(error);
-    console.info('[YOROI-LEDGER-BRIDGE] '
+    console.info('[YOROI-LB] '
       + 'Is your Ledger Nano S device connected to your system\'s USB port?');
   }
 }

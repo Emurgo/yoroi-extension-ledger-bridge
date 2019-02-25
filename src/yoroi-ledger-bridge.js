@@ -52,6 +52,7 @@ export default class YoroiLedgerBridge {
   async getVersion(
     replyAction: string
   ): Promise<void> {
+    console.debug(`[YOROI-LB]::getVersion::${replyAction}::args::`);
     const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
@@ -62,6 +63,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
+      console.debug(`[YOROI-LB]::getVersion::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err);
       this.sendMessageToExtension({
         action: replyAction,
@@ -89,6 +91,7 @@ export default class YoroiLedgerBridge {
     replyAction: string,
     hdPath: BIP32Path
   ): Promise<void> {
+    console.debug(`[YOROI-LB]::getExtendedPublicKey::${replyAction}::args::hdPath::${JSON.stringify(hdPath)}`);
     const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
@@ -99,6 +102,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
+      console.debug(`[YOROI-LB]::getExtendedPublicKey::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err)
       this.sendMessageToExtension({
         action: replyAction,
@@ -120,6 +124,7 @@ export default class YoroiLedgerBridge {
     inputs: Array<InputTypeUTxO>,
     outputs: Array<OutputTypeAddress | OutputTypeChange>
   ): Promise<void> {
+    console.debug(`[YOROI-LB]::signTransaction::${replyAction}::args::inputs::${JSON.stringify(inputs)}::outputs${JSON.stringify(outputs)}`);
     const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
@@ -130,6 +135,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
+      console.debug(`[YOROI-LB]::signTransaction::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err);
       this.sendMessageToExtension({
           action: replyAction,
@@ -160,6 +166,7 @@ export default class YoroiLedgerBridge {
     replyAction: string,
     hdPath: BIP32Path
   ): Promise<void> {
+    console.debug(`[YOROI-LB]::deriveAddress::${replyAction}::args::hdPath::${JSON.stringify(hdPath)}`);
     const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
@@ -170,6 +177,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
+      console.debug(`[YOROI-LB]::deriveAddress::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err);
       this.sendMessageToExtension({
           action: replyAction,
