@@ -2,29 +2,25 @@
   "name": "yoroi-extension-ledger-bridge",
   "version": "0.5.0",
   "description": "Interface for interacting through u2f for the Cardano Ledger app",
+  "author": "EMURGO.io",
+  "license": "MIT",  
   "main": "lib/index.js",
+  "engines": {
+    "node": "8.15.0",
+    "npm": "6.4.1"
+  },  
   "scripts": {
+    "preinstall": "sh ./pre-install.sh",
+    "postinstall": "sh ./post-install.sh",    
     "eslint": "eslint .",
     "flow": "flow .",
     "build-js": "babel src/ -d lib",
     "build-flow": "flow-copy-source src lib",
-    "build": "yarn build-js && yarn build-flow"
+    "build": "yarn build-js && yarn build-flow",
+    "test": "echo \"Error: no test specified\" && exit 1"    
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Emurgo/yoroi-extension-ledger-bridge.git"
-  },
-  "keywords": [
-    "cardano",
-    "ledger",
-    "yoroi"
-  ],
-  "files": [
-    "lib"
-  ],
-  "author": "EMURGO",
-  "license": "MIT",
   "dependencies": {
+    "@cardano-foundation/ledgerjs-hw-app-cardano": "file:modules/ledgerjs-hw-app-cardano",    
     "events": "^2.0.0"
   },
   "devDependencies": {
@@ -37,5 +33,17 @@
     "eslint-plugin-flowtype": "^3.4.2",
     "flow-bin": "^0.93.0",
     "flow-copy-source": "^2.0.3"
-  }
+  },
+  "files": [
+    "lib"
+  ],  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Emurgo/yoroi-extension-ledger-bridge.git"
+  },
+  "keywords": [
+    "cardano",
+    "ledger",
+    "yoroi"
+  ]  
 }
