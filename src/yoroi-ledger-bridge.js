@@ -1,7 +1,8 @@
 // @flow
 
 import 'babel-polyfill'; // this is need but no clear reasion why??
-import TransportU2F from '@ledgerhq/hw-transport-u2f';
+// import Transport from '@ledgerhq/hw-transport-u2f';
+import Transport from '@ledgerhq/hw-transport-webusb';
 import AdaApp from '@cardano-foundation/ledgerjs-hw-app-cardano';
 import type {
   BIP32Path,
@@ -31,7 +32,7 @@ export default class YoroiLedgerBridge {
    * @returns {Promise<{major:number, minor:number, patch:number, flags:{isDebug:boolean}}>}
    */
   async getConnectedDeviceVersion(): Promise<GetVersionResponse> {
-    const transport = await TransportU2F.create();
+    const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
       return adaApp.getVersion();
@@ -52,7 +53,7 @@ export default class YoroiLedgerBridge {
   async getVersion(
     replyAction: string
   ): Promise<void> {
-    const transport = await TransportU2F.create();
+    const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.getVersion();
@@ -89,7 +90,7 @@ export default class YoroiLedgerBridge {
     replyAction: string,
     hdPath: BIP32Path
   ): Promise<void> {
-    const transport = await TransportU2F.create();
+    const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.getExtendedPublicKey(hdPath);
@@ -120,7 +121,7 @@ export default class YoroiLedgerBridge {
     inputs: Array<InputTypeUTxO>,
     outputs: Array<OutputTypeAddress | OutputTypeChange>
   ): Promise<void> {
-    const transport = await TransportU2F.create();
+    const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.signTransaction(inputs, outputs);
@@ -160,7 +161,7 @@ export default class YoroiLedgerBridge {
     replyAction: string,
     hdPath: BIP32Path
   ): Promise<void> {
-    const transport = await TransportU2F.create();
+    const transport = await Transport.create();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.deriveAddress(hdPath)
