@@ -188,3 +188,5 @@ export function makeCardanoBIP44Path (
     address
   ];
 }
+
+export * from '@cardano-foundation/ledgerjs-hw-app-cardano';
