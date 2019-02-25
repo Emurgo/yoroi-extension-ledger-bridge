@@ -5,13 +5,7 @@
   "author": "EMURGO.io",
   "license": "MIT",  
   "main": "lib/index.js",
-  "engines": {
-    "node": "8.15.0",
-    "npm": "6.4.1"
-  },  
   "scripts": {
-    "preinstall": "sh ./pre-install.sh",
-    "postinstall": "sh ./post-install.sh",    
     "eslint": "eslint .",
     "flow": "flow .",
     "build-js": "babel src/ -d lib",
