@@ -6,7 +6,9 @@ To connect to the Ledger device, we need to use a u2f connection (WebUSB is reje
 
 ## Implementation
 
-We host [ledgerjs-cardano](https://github.com/vacuumlabs/ledgerjs-cardano) on the `gh-pages` branch the interface to connect to this page on the `master` branch.
+We host [cardano-foundation/ledgerjs-hw-app-cardano](https://github.com/cardano-foundation/ledgerjs-hw-app-cardano) on the `gh-pages` [branch](https://github.com/Emurgo/yoroi-extension-ledger-bridge/tree/gh-pages) the interface to connect to this page on the `master` branch.
+
+Hosted page [link](https://emurgo.github.io/yoroi-extension-ledger-bridge/).
 
 To use this interface, simply add the `master` branch as a dependency to your `node` project.
 
