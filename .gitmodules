@@ -1,3 +1,0 @@
-[submodule "ledgerjs-hw-app-cardano"]
-	path = ledgerjs-hw-app-cardano
-	url = https://github.com/cardano-foundation/ledgerjs-hw-app-cardano.git
