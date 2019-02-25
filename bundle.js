@@ -15169,11 +15169,11 @@ var init = async function init() {
 };
 
 var onSuccess = async function onSuccess(bridge) {
-  console.log('[YOROI-LEDGER-BRIDGE] initialized...');
+  console.info('[YOROI-LB] initialized...');
 };
 
 var onError = function onError(error) {
-  console.error('[YOROI-LEDGER-BRIDGE] ERROR: initialization failed!!!\n' + error);
+  console.error('[YOROI-LB] ERROR: initialization failed!!!\n' + error);
 };
 
 /**
@@ -15182,10 +15182,10 @@ var onError = function onError(error) {
 var logConnectedDeviceVersion = async function logConnectedDeviceVersion() {
   try {
     var deviceVersion = await bridge.getConnectedDeviceVersion();
-    console.info('[YOROI-LEDGER-BRIDGE] Connected Ledger device version: ' + JSON.stringify(deviceVersion, null, 2));
+    console.info('[YOROI-LB] Connected Ledger device version: ' + JSON.stringify(deviceVersion, null, 2));
   } catch (error) {
     console.error(error);
-    console.info('[YOROI-LEDGER-BRIDGE] ' + 'Is your Ledger Nano S device connected to your system\'s USB port?');
+    console.info('[YOROI-LB] ' + 'Is your Ledger Nano S device connected to your system\'s USB port?');
   }
 };
 
@@ -15256,6 +15256,7 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'getVersion',
     value: async function getVersion(replyAction) {
+      console.debug('[YOROI-LB]::getVersion::' + replyAction + '::args::');
       var transport = await _hwTransportU2f2.default.create();
       try {
         var adaApp = new _ledgerjsHwAppCardano2.default(transport);
@@ -15266,6 +15267,7 @@ var YoroiLedgerBridge = function () {
           payload: res
         });
       } catch (err) {
+        console.debug('[YOROI-LB]::getVersion::' + replyAction + '::error::' + JSON.stringify(err));
         var e = this.ledgerErrToMessage(err);
         this.sendMessageToExtension({
           action: replyAction,
@@ -15293,6 +15295,7 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'getExtendedPublicKey',
     value: async function getExtendedPublicKey(replyAction, hdPath) {
+      console.debug('[YOROI-LB]::getExtendedPublicKey::' + replyAction + '::args::hdPath::' + JSON.stringify(hdPath));
       var transport = await _hwTransportU2f2.default.create();
       try {
         var adaApp = new _ledgerjsHwAppCardano2.default(transport);
@@ -15303,6 +15306,7 @@ var YoroiLedgerBridge = function () {
           payload: res
         });
       } catch (err) {
+        console.debug('[YOROI-LB]::getExtendedPublicKey::' + replyAction + '::error::' + JSON.stringify(err));
         var e = this.ledgerErrToMessage(err);
         this.sendMessageToExtension({
           action: replyAction,
@@ -15323,6 +15327,7 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'signTransaction',
     value: async function signTransaction(replyAction, inputs, outputs) {
+      console.debug('[YOROI-LB]::signTransaction::' + replyAction + '::args::inputs::' + JSON.stringify(inputs) + '::outputs' + JSON.stringify(outputs));
       var transport = await _hwTransportU2f2.default.create();
       try {
         var adaApp = new _ledgerjsHwAppCardano2.default(transport);
@@ -15333,6 +15338,7 @@ var YoroiLedgerBridge = function () {
           payload: res
         });
       } catch (err) {
+        console.debug('[YOROI-LB]::signTransaction::' + replyAction + '::error::' + JSON.stringify(err));
         var e = this.ledgerErrToMessage(err);
         this.sendMessageToExtension({
           action: replyAction,
@@ -15363,6 +15369,7 @@ var YoroiLedgerBridge = function () {
   }, {
     key: 'deriveAddress',
     value: async function deriveAddress(replyAction, hdPath) {
+      console.debug('[YOROI-LB]::deriveAddress::' + replyAction + '::args::hdPath::' + JSON.stringify(hdPath));
       var transport = await _hwTransportU2f2.default.create();
       try {
         var adaApp = new _ledgerjsHwAppCardano2.default(transport);
@@ -15373,6 +15380,7 @@ var YoroiLedgerBridge = function () {
           payload: res
         });
       } catch (err) {
+        console.debug('[YOROI-LB]::deriveAddress::' + replyAction + '::error::' + JSON.stringify(err));
         var e = this.ledgerErrToMessage(err);
         this.sendMessageToExtension({
           action: replyAction,
