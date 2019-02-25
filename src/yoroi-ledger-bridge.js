@@ -1,8 +1,7 @@
 // @flow
 
 import 'babel-polyfill'; // this is need but no clear reasion why??
-// import Transport from '@ledgerhq/hw-transport-u2f';
-import Transport from '@ledgerhq/hw-transport-webusb';
+import Transport from '@ledgerhq/hw-transport-u2f';
 import AdaApp from '@cardano-foundation/ledgerjs-hw-app-cardano';
 import type {
   BIP32Path,
