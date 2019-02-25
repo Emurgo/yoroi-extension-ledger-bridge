@@ -9,7 +9,7 @@ import type {
   DeriveAddressResponse,
   GetExtendedPublicKeyResponse,
   SignTransactionResponse
-} from './adaTypes';
+} from '@cardano-foundation/ledgerjs-hw-app-cardano';
 
 import EventEmitter from 'events';
 
@@ -188,3 +188,5 @@ export function makeCardanoBIP44Path (
     address
   ];
 }
+
+export * from '@cardano-foundation/ledgerjs-hw-app-cardano';
