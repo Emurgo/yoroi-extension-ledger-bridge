@@ -28,6 +28,8 @@ type MessageType = {
   params: any
 };
 
+export type ConnectionType = 'webusb' | 'u2f';
+
 export class LedgerBridge extends EventEmitter {
 
   bridgeUrl: string;
@@ -36,9 +38,12 @@ export class LedgerBridge extends EventEmitter {
   /**
    * Use `bridgeOverride` to use this library with your own website
    */
-  constructor (bridgeOverride: string = BRIDGE_URL) {
+  constructor (
+    bridgeOverride: string = BRIDGE_URL,
+    type: ConnectionType = 'u2f',
+  ) {
     super();
-    this.bridgeUrl = bridgeOverride;
+    this.bridgeUrl = bridgeOverride + '?' + type;
     this.iframe = _setupIframe(this.bridgeUrl);
   }
 
