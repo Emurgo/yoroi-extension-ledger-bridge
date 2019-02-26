@@ -1,7 +1,6 @@
 // @flow
 
 import 'babel-polyfill'; // this is need but no clear reasion why??
-import Transport from '@ledgerhq/hw-transport-u2f';
 import AdaApp from '@cardano-foundation/ledgerjs-hw-app-cardano';
 import type {
   BIP32Path,
@@ -21,7 +20,8 @@ const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
 
 export default class YoroiLedgerBridge {
 
-  constructor () {
+  constructor (transportGenerator: Function) {
+    this.transportGenerator = transportGenerator;
     this.addEventListeners();
   }
 
@@ -31,7 +31,7 @@ export default class YoroiLedgerBridge {
    * @returns {Promise<{major:number, minor:number, patch:number, flags:{isDebug:boolean}}>}
    */
   async getConnectedDeviceVersion(): Promise<GetVersionResponse> {
-    const transport = await Transport.create();
+    const transport = await this.transportGenerator();
     try {
       const adaApp = new AdaApp(transport);
       return adaApp.getVersion();
@@ -53,7 +53,7 @@ export default class YoroiLedgerBridge {
     replyAction: string
   ): Promise<void> {
     console.debug(`[YOROI-LB]::getVersion::${replyAction}::args::`);
-    const transport = await Transport.create();
+    const transport = await this.transportGenerator();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.getVersion();
@@ -92,7 +92,7 @@ export default class YoroiLedgerBridge {
     hdPath: BIP32Path
   ): Promise<void> {
     console.debug(`[YOROI-LB]::getExtendedPublicKey::${replyAction}::args::hdPath::${JSON.stringify(hdPath)}`);
-    const transport = await Transport.create();
+    const transport = await this.transportGenerator();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.getExtendedPublicKey(hdPath);
@@ -125,7 +125,7 @@ export default class YoroiLedgerBridge {
     outputs: Array<OutputTypeAddress | OutputTypeChange>
   ): Promise<void> {
     console.debug(`[YOROI-LB]::signTransaction::${replyAction}::args::inputs::${JSON.stringify(inputs)}::outputs${JSON.stringify(outputs)}`);
-    const transport = await Transport.create();
+    const transport = await this.transportGenerator();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.signTransaction(inputs, outputs);
@@ -167,7 +167,7 @@ export default class YoroiLedgerBridge {
     hdPath: BIP32Path
   ): Promise<void> {
     console.debug(`[YOROI-LB]::deriveAddress::${replyAction}::args::hdPath::${JSON.stringify(hdPath)}`);
-    const transport = await Transport.create();
+    const transport = await this.transportGenerator();
     try {
       const adaApp = new AdaApp(transport);
       const res = await adaApp.deriveAddress(hdPath)

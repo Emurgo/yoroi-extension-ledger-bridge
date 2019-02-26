@@ -4,9 +4,19 @@ import YoroiLedgerBridge from './yoroi-ledger-bridge';
 
 let bridge;
 
+const get_param = window.location.search.substr(1);
+
 const init = async () => {
   try {
-    bridge = new YoroiLedgerBridge();
+    let transportGenerator;
+    if (get_param === 'webusb') {
+      const TransportUSB = require('@ledgerhq/hw-transport-webusb').default;
+      transportGenerator = () => TransportUSB.create();
+    } else {
+      const TransportU2F = require('@ledgerhq/hw-transport-u2f').default;
+      transportGenerator = () => TransportU2F.create();
+    }
+    bridge = new YoroiLedgerBridge(transportGenerator);
 
     window.onload = function(e) { 
       document.getElementById("versionButton")
