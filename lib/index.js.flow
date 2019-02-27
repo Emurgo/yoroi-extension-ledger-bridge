@@ -174,22 +174,22 @@ function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
  * See BIP44 for explanation
  * https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
  * Ledger (according to current security rules) denies any derivation path which does not start with
- *  `[HD+44, HD+1815, HD+(small) account number]`
+ *  `[HD+44, HD+1815, HD+(account), chain, address]`
  * 
- * @param {*} account 
- * @param {*} change 
- * @param {*} address 
+ * @param {*} account account index eg: { 0 = first account , 1 = second account ...}
+ * @param {*} chain 0 = external or 1 = change
+ * @param {*} address address index eg: { 0 = first address , 1 = second address ...}
  */
 export function makeCardanoBIP44Path (
   account: number,
-  change: boolean,
+  chain: 0 | 1,
   address: number
 ): BIP32Path {
   return [
     HARDENED + 44,
     HARDENED + COIN_TYPE,
     HARDENED + account,
-    change ? 1 : 0,
+    chain,
     address
   ];
 }
