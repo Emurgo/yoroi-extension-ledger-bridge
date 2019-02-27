@@ -182,7 +182,7 @@ function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
  */
 export function makeCardanoBIP44Path (
   account: number,
-  chain: 0 | 1,
+  chain: number,
   address: number
 ): BIP32Path {
   return [
