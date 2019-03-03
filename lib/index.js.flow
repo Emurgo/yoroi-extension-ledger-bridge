@@ -28,6 +28,8 @@ type MessageType = {
   params: any
 };
 
+export const IFRAME_NAME = 'LEDGER-BRIDGE-IFRAME';
+
 export type ConnectionType = 'webusb' | 'u2f';
 
 export class LedgerBridge extends EventEmitter {
@@ -39,12 +41,13 @@ export class LedgerBridge extends EventEmitter {
    * Use `bridgeOverride` to use this library with your own website
    */
   constructor (
+    iframe: ?HTMLIFrameElement = null,
     bridgeOverride: string = BRIDGE_URL,
     type: ConnectionType = 'u2f',
   ) {
     super();
     this.bridgeUrl = bridgeOverride + '?' + type;
-    this.iframe = _setupIframe(this.bridgeUrl);
+    this.iframe = iframe === null ? _setupIframe(this.bridgeUrl) : ((iframe: any): HTMLIFrameElement);
   }
 
   // ==============================
@@ -158,6 +161,7 @@ function _getOrigin (bridgeUrl: string): string {
 function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
   const iframe = document.createElement('iframe');
   iframe.src = bridgeUrl;
+  iframe.id = IFRAME_NAME
   
   if (document.head) {
     document.head.appendChild(iframe);
