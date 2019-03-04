@@ -36,7 +36,8 @@ type MessageType = {
 export type ConnectionType = 'webusb' | 'u2f';
 
 export class LedgerBridge extends EventEmitter {
-
+  
+  isReady: boolean;
   bridgeUrl: string;
   iframe: HTMLIFrameElement;
 
@@ -53,8 +54,13 @@ export class LedgerBridge extends EventEmitter {
     connectionType: ConnectionType = 'u2f',
   ) {
     super();
+    this.isReady = false;
     this.bridgeUrl = bridgeOverride + '?' + connectionType;
     this.iframe = (iframe) ? iframe : _setupIframe(this.bridgeUrl);
+    this.iframe.onload = () => {
+      this.isReady = true;
+      console.debug('[YOROI-LB-CONNECTOR]:: iframe is completely loaded');
+    }
   }
 
   // ==============================
