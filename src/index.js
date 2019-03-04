@@ -14,13 +14,18 @@ import type {
 import EventEmitter from 'events';
 
 // https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
-const HARDENED = 0x80000000;
-
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
+const HARDENED = 0x80000000;
+const PURPOSE = 44;
 const COIN_TYPE = 1815; // Cardano
+export const BIP44_HARDENED_CARDANO_FIRST_ACCOUNT_SUB_PATH: BIP32Path = [
+  HARDENED + PURPOSE,
+  HARDENED + COIN_TYPE,
+  HARDENED + 0, // FIRST_ACCOUNT
+];
 
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge';
-const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
+export const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
 
 type MessageType = {
   target?: string,
@@ -28,26 +33,28 @@ type MessageType = {
   params: any
 };
 
-export const IFRAME_NAME = 'LEDGER-BRIDGE-IFRAME';
-
 export type ConnectionType = 'webusb' | 'u2f';
 
 export class LedgerBridge extends EventEmitter {
 
   bridgeUrl: string;
   iframe: HTMLIFrameElement;
-  
+
   /**
    * Use `bridgeOverride` to use this library with your own website
+   * 
+   * @param {*} iframe 
+   * @param {*} bridgeOverride 
+   * @param {*} connectionType 'webusb' | 'u2f'
    */
   constructor (
     iframe: ?HTMLIFrameElement = null,
     bridgeOverride: string = BRIDGE_URL,
-    type: ConnectionType = 'u2f',
+    connectionType: ConnectionType = 'u2f',
   ) {
     super();
-    this.bridgeUrl = bridgeOverride + '?' + type;
-    this.iframe = iframe === null ? _setupIframe(this.bridgeUrl) : ((iframe: any): HTMLIFrameElement);
+    this.bridgeUrl = bridgeOverride + '?' + connectionType;
+    this.iframe = (iframe) ? iframe : _setupIframe(this.bridgeUrl);
   }
 
   // ==============================
@@ -161,7 +168,7 @@ function _getOrigin (bridgeUrl: string): string {
 function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
   const iframe = document.createElement('iframe');
   iframe.src = bridgeUrl;
-  iframe.id = IFRAME_NAME
+  iframe.id = TARGET_IFRAME_NAME
   
   if (document.head) {
     document.head.appendChild(iframe);
@@ -190,7 +197,7 @@ export function makeCardanoBIP44Path (
   address: number
 ): BIP32Path {
   return [
-    HARDENED + 44,
+    HARDENED + PURPOSE,
     HARDENED + COIN_TYPE,
     HARDENED + account,
     chain,
