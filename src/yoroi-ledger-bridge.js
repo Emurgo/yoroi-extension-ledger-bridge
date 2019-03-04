@@ -63,7 +63,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
-      console.debug(`[YOROI-LB]::getVersion::${replyAction}::error::${JSON.stringify(err)}`);
+      console.error(`[YOROI-LB]::getVersion::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err);
       this.sendMessageToExtension({
         action: replyAction,
@@ -102,7 +102,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
-      console.debug(`[YOROI-LB]::getExtendedPublicKey::${replyAction}::error::${JSON.stringify(err)}`);
+      console.error(`[YOROI-LB]::getExtendedPublicKey::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err)
       this.sendMessageToExtension({
         action: replyAction,
@@ -135,7 +135,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
-      console.debug(`[YOROI-LB]::signTransaction::${replyAction}::error::${JSON.stringify(err)}`);
+      console.error(`[YOROI-LB]::signTransaction::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err);
       this.sendMessageToExtension({
           action: replyAction,
@@ -177,7 +177,7 @@ export default class YoroiLedgerBridge {
           payload: res,
       });
     } catch (err) {
-      console.debug(`[YOROI-LB]::deriveAddress::${replyAction}::error::${JSON.stringify(err)}`);
+      console.error(`[YOROI-LB]::deriveAddress::${replyAction}::error::${JSON.stringify(err)}`);
       const e = this.ledgerErrToMessage(err);
       this.sendMessageToExtension({
           action: replyAction,

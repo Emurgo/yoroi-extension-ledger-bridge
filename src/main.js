@@ -38,7 +38,7 @@ const onSuccess = async (bridge) => {
 }
 
 const onError = (error) => {
-  console.error(`[YOROI-LB] ERROR: initialization failed!!!\n${error}`);
+  console.error(`[YOROI-LB] ERROR: initialization failed!!!\n${JSON.stringify(error, null, 2)}`);
 }
 
 /**
