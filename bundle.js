@@ -15863,7 +15863,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
+var YOROI_LEDGER_BRIDGE_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
 
 var YoroiLedgerBridge = function () {
   function YoroiLedgerBridge(transportGenerator) {
@@ -16046,7 +16046,7 @@ var YoroiLedgerBridge = function () {
       var _this = this;
 
       window.addEventListener('message', async function (e) {
-        if (e && e.data && e.data.target === TARGET_IFRAME_NAME) {
+        if (e && e.data && e.data.target === YOROI_LEDGER_BRIDGE_IFRAME_NAME) {
           var _e$data = e.data,
               _action = _e$data.action,
               params = _e$data.params;
