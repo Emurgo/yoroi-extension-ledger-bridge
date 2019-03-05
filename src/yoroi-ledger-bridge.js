@@ -16,7 +16,7 @@ type MessageType = {
   payload: any
 };
 
-const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
+const YOROI_LEDGER_BRIDGE_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
 
 export default class YoroiLedgerBridge {
 
@@ -191,7 +191,7 @@ export default class YoroiLedgerBridge {
 
   addEventListeners(): void {
     window.addEventListener('message', async e => {
-      if (e && e.data && e.data.target === TARGET_IFRAME_NAME) {
+      if (e && e.data && e.data.target === YOROI_LEDGER_BRIDGE_IFRAME_NAME) {
         const { action, params } = e.data;
         const replyAction = `${action}-reply`;
         switch (action) {
