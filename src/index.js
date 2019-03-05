@@ -25,7 +25,7 @@ export const BIP44_HARDENED_CARDANO_FIRST_ACCOUNT_SUB_PATH: BIP32Path = [
 ];
 
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge';
-export const TARGET_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
+export const YOROI_LEDGER_BRIDGE_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
 
 type MessageType = {
   target?: string,
@@ -150,7 +150,7 @@ export class LedgerBridge extends EventEmitter {
     msg: MessageType,
     cb: ({ success: boolean, payload: any}) => void
   ) {
-    msg.target = TARGET_IFRAME_NAME;
+    msg.target = YOROI_LEDGER_BRIDGE_IFRAME_NAME;
     this.iframe.contentWindow.postMessage(msg, '*');
     window.addEventListener('message', ({ origin, data }) => {
       if (origin !== _getOrigin(this.bridgeUrl)) return false;
@@ -174,7 +174,7 @@ function _getOrigin (bridgeUrl: string): string {
 function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
   const iframe = document.createElement('iframe');
   iframe.src = bridgeUrl;
-  iframe.id = TARGET_IFRAME_NAME
+  iframe.id = YOROI_LEDGER_BRIDGE_IFRAME_NAME
   
   if (document.head) {
     document.head.appendChild(iframe);
