@@ -10,8 +10,6 @@
     "npm": "6.4.1"
   },
   "scripts": {
-    "preinstall": "sh ./pre-install.sh",
-    "postinstall": "sh ./post-install.sh",
     "start": "gulp",
     "build": "gulp scripts",
     "flow": "flow .",
@@ -32,7 +30,7 @@
     "eslint": "5.14.0"
   },
   "dependencies": {
-    "@cardano-foundation/ledgerjs-hw-app-cardano": "file:modules/ledgerjs-hw-app-cardano",
+    "@cardano-foundation/ledgerjs-hw-app-cardano": "1.0.2",
     "@ledgerhq/hw-transport-u2f": "4.41.1",
     "@ledgerhq/hw-transport-webusb": "4.41.1",
     "babel-polyfill": "6.26.0",
