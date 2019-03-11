@@ -78,7 +78,7 @@ export class LedgerBridge extends EventEmitter {
         if (success) {
           resolve(payload);
         } else {
-          reject(new Error('Ledger: getVersion failed'))
+          reject(new Error(payload))
         }
       });
     });
@@ -98,7 +98,7 @@ export class LedgerBridge extends EventEmitter {
         if (success) {
           resolve(payload);
         } else {
-          reject(new Error('Ledger: getExtendedPublicKey failed'))
+          reject(new Error(payload))
         }
       })
     });
@@ -118,7 +118,7 @@ export class LedgerBridge extends EventEmitter {
         if (success) {
           resolve(payload);
         } else {
-          reject(new Error('Ledger: deriveAddress failed'))
+          reject(new Error(payload))
         }
       })
     });
@@ -140,7 +140,7 @@ export class LedgerBridge extends EventEmitter {
           if (success) {
             resolve(payload);
           } else {
-            reject(new Error('Ledger: signTransaction failed'))
+            reject(new Error(payload))
           }
         })
     });
