@@ -78,7 +78,7 @@ export class LedgerBridge extends EventEmitter {
         if (success) {
           resolve(payload);
         } else {
-          reject(new Error(payload))
+          reject(new Error(_prepareError(payload)))
         }
       });
     });
@@ -98,7 +98,7 @@ export class LedgerBridge extends EventEmitter {
         if (success) {
           resolve(payload);
         } else {
-          reject(new Error(payload))
+          reject(new Error(_prepareError(payload)))
         }
       })
     });
@@ -118,7 +118,7 @@ export class LedgerBridge extends EventEmitter {
         if (success) {
           resolve(payload);
         } else {
-          reject(new Error(payload))
+          reject(new Error(_prepareError(payload)))
         }
       })
     });
@@ -140,7 +140,7 @@ export class LedgerBridge extends EventEmitter {
           if (success) {
             resolve(payload);
           } else {
-            reject(new Error(payload))
+            reject(new Error(_prepareError(payload)))
           }
         })
     });
@@ -186,6 +186,12 @@ function _setupIframe (bridgeUrl: string): HTMLIFrameElement {
 // ====================
 //   Helper Functions
 // ====================
+
+function _prepareError(payload) {
+  return (payload && payload.error)
+    ? payload.error
+    : 'SOMETHING_UNEXPECTED_HAPPENED';
+}
 
 /**
  * See BIP44 for explanation
