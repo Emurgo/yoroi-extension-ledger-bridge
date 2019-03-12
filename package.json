@@ -1,6 +1,6 @@
 {
   "name": "yoroi-extension-ledger-bridge",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Yoroi Extension Ledger hardware wallet bridge",
   "author": "EMURGO.io",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "eslint": "5.14.0"
   },
   "dependencies": {
-    "@cardano-foundation/ledgerjs-hw-app-cardano": "1.0.2",
+    "@cardano-foundation/ledgerjs-hw-app-cardano": "1.0.3",
     "@ledgerhq/hw-transport-u2f": "4.41.1",
     "@ledgerhq/hw-transport-webusb": "4.41.1",
     "babel-polyfill": "6.26.0",
