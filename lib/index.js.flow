@@ -236,3 +236,9 @@ export function makeCardanoBIP44Path (
     address
   ];
 }
+
+export function toDerivationPathString(derivationPath: BIP32Path) {
+  return `m/${derivationPath
+    .map((item) => (item % HARDENED) + (item >= HARDENED ? "'" : ''))
+    .join('/')}`
+}
