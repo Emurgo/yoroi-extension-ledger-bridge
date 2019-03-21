@@ -319,7 +319,11 @@ var Ada = function () {
                 P1_INIT = 0x01;
                 P1_CONTINUE = 0x02;
                 P2_UNUSED = 0x00;
-                CHUNK_SIZE = 255;
+
+                // Note: U2F transport does not like APDU length longer than 255
+                // so we are leaving it some space
+
+                CHUNK_SIZE = 245;
 
                 // Initial request
                 data = _utils2.default.uint32_to_buf(outputIndex);
@@ -15884,6 +15888,49 @@ var YoroiLedgerBridge = function () {
         transport.close();
       }
     }
+
+    /**
+     * @description Show an address on the Ledger device so the user can confirm the address not generated adversarially
+     * Note: Show address under the hood is actually a deriveAddress call
+     *
+     * @param {*} replyAction 
+     * @param {*} hdPath : The path indexes. Path must begin with `44'/1815'/i'/(0 or 1)/j`, and may be up to 10 indexes long
+     * 
+     * @throws 5001 - The path provided does not have the first 3 indexes hardened or 4th index is not 0 or 1
+     * @throws 5002 - The path provided is less than 5 indexes
+     * @throws 5003 - Some of the indexes is not a number
+     *
+     * @example
+     *  await ada.showAddress(hdPath)
+     * 
+     * @return {Promise<void>}
+     */
+
+  }, {
+    key: 'showAddress',
+    value: async function showAddress(replyAction, hdPath) {
+      console.debug('[YOROI-LB]::showAddress::' + replyAction + '::args::hdPath::' + JSON.stringify(hdPath));
+      var transport = await this.transportGenerator();
+      try {
+        var adaApp = new _ledgerjsHwAppCardano2.default(transport);
+        adaApp.showAddress(hdPath);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: true,
+          payload: undefined
+        });
+      } catch (err) {
+        console.debug('[YOROI-LB]::showAddress::' + replyAction + '::error::' + JSON.stringify(err));
+        var e = this.ledgerErrToMessage(err);
+        this.sendMessageToExtension({
+          action: replyAction,
+          success: false,
+          payload: { error: e.toString() }
+        });
+      } finally {
+        transport.close();
+      }
+    }
   }, {
     key: 'addEventListeners',
     value: function addEventListeners() {
@@ -15908,6 +15955,9 @@ var YoroiLedgerBridge = function () {
               break;
             case 'ledger-derive-address':
               _this.deriveAddress(replyAction, params.hdPath);
+              break;
+            case 'ledger-show-address':
+              _this.showAddress(replyAction, params.hdPath);
               break;
           }
         }

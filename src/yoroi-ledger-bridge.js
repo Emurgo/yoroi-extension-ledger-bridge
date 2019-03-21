@@ -189,6 +189,49 @@ export default class YoroiLedgerBridge {
     }
   }
 
+  /**
+   * @description Show an address on the Ledger device so the user can confirm the address not generated adversarially
+   * Note: Show address under the hood is actually a deriveAddress call
+   *
+   * @param {*} replyAction 
+   * @param {*} hdPath : The path indexes. Path must begin with `44'/1815'/i'/(0 or 1)/j`, and may be up to 10 indexes long
+   * 
+   * @throws 5001 - The path provided does not have the first 3 indexes hardened or 4th index is not 0 or 1
+   * @throws 5002 - The path provided is less than 5 indexes
+   * @throws 5003 - Some of the indexes is not a number
+   *
+   * @example
+   *  await ada.showAddress(hdPath)
+   * 
+   * @return {Promise<void>}
+   */
+  async showAddress(
+    replyAction: string,
+    hdPath: BIP32Path
+  ): Promise<void> {
+    console.debug(`[YOROI-LB]::showAddress::${replyAction}::args::hdPath::${JSON.stringify(hdPath)}`);
+    const transport = await this.transportGenerator();
+    try {
+      const adaApp = new AdaApp(transport);
+      adaApp.showAddress(hdPath)
+      this.sendMessageToExtension({
+          action: replyAction,
+          success: true,
+          payload: undefined
+      });
+    } catch (err) {
+      console.debug(`[YOROI-LB]::showAddress::${replyAction}::error::${JSON.stringify(err)}`);
+      const e = this.ledgerErrToMessage(err);
+      this.sendMessageToExtension({
+          action: replyAction,
+          success: false,
+          payload: { error: e.toString() },
+      });
+    } finally {
+      transport.close();
+    }
+  }
+
   addEventListeners(): void {
     window.addEventListener('message', async e => {
       if (e && e.data && e.data.target === YOROI_LEDGER_BRIDGE_IFRAME_NAME) {
@@ -206,6 +249,9 @@ export default class YoroiLedgerBridge {
             break;
           case 'ledger-derive-address':
             this.deriveAddress(replyAction, params.hdPath)
+            break;
+          case 'ledger-show-address':
+            this.showAddress(replyAction, params.hdPath)
             break;
         }
       }
