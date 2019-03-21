@@ -1,6 +1,6 @@
 {
   "name": "yoroi-extension-ledger-bridge",
-  "version": "0.9.2",
+  "version": "1.0.0",
   "description": "Interface for interacting through u2f for the Cardano Ledger app",
   "author": "EMURGO.io",
   "license": "MIT",  

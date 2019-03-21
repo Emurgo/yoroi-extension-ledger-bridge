@@ -124,6 +124,26 @@ export class LedgerBridge extends EventEmitter {
     });
   }
 
+  showAddress(
+    hdPath: BIP32Path
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._sendMessage({
+        action: 'ledger-show-address',
+        params: {
+          hdPath,
+        },
+      },
+      ({success, payload}) => {
+        if (success) {
+          resolve(payload);
+        } else {
+          reject(new Error(_prepareError(payload)))
+        }
+      })
+    });
+  }
+
   signTransaction(
     inputs: Array<InputTypeUTxO>,
     outputs: Array<OutputTypeAddress | OutputTypeChange>
