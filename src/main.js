@@ -19,8 +19,11 @@ const init = async () => {
     bridge = new YoroiLedgerBridge(transportGenerator);
 
     window.onload = function(e) { 
-      document.getElementById("versionButton")
-        .addEventListener('click', async () => logConnectedDeviceVersion());
+      const button = document.getElementById("versionButton");
+      if (!button) {
+        return;
+      }
+      button.addEventListener('click', async () => logConnectedDeviceVersion());
     }
 
     if (bridge) {

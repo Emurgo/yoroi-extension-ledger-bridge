@@ -20,6 +20,8 @@ const YOROI_LEDGER_BRIDGE_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
 
 export default class YoroiLedgerBridge {
 
+  transportGenerator: Function;
+  
   constructor (transportGenerator: Function) {
     this.transportGenerator = transportGenerator;
     this.addEventListeners();

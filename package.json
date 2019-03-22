@@ -30,9 +30,9 @@
     "eslint": "5.14.0"
   },
   "dependencies": {
-    "@cardano-foundation/ledgerjs-hw-app-cardano": "1.0.4",
-    "@ledgerhq/hw-transport-u2f": "4.41.1",
-    "@ledgerhq/hw-transport-webusb": "4.41.1",
+    "@cardano-foundation/ledgerjs-hw-app-cardano": "1.0.6",
+    "@ledgerhq/hw-transport-u2f": "4.47.0",
+    "@ledgerhq/hw-transport-webusb": "4.47.0",
     "babel-polyfill": "6.26.0",
     "babel-runtime": "6.26.0",
     "babelify": "8.0.0",

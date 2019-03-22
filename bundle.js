@@ -34,6 +34,7 @@ var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 var _ErrorMsgs; /********************************************************************************
                  *   Ledger Node JS API
                  *   (c) 2016-2017 Ledger
+                 *   (c) 2019 VacuumLabs
                  *
                  *  Licensed under the Apache License, Version 2.0 (the "License");
                  *  you may not use this file except in compliance with the License.
@@ -48,8 +49,6 @@ var _ErrorMsgs; /***************************************************************
                  *  limitations under the License.
                  ********************************************************************************/
 
-
-var _hwTransport = require("@ledgerhq/hw-transport");
 
 var _utils = require("./utils");
 
@@ -195,13 +194,15 @@ var wrapConvertError = function wrapConvertError(fn) {
  * const ada = new Ada(transport);
  */
 
+//
+
 var Ada = function () {
   function Ada(transport) {
     var scrambleKey = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "ADA";
     (0, _classCallCheck3.default)(this, Ada);
 
     this.transport = transport;
-    this.methods = ["getVersion", "getExtendedPublicKey", "signTransaction", "deriveAddress"];
+    this.methods = ["getVersion", "getExtendedPublicKey", "signTransaction", "deriveAddress", "showAddress"];
     this.transport.decorateAppAPIMethods(this, this.methods, scrambleKey);
     this.send = wrapConvertError(this.transport.send);
   }
@@ -304,7 +305,7 @@ var Ada = function () {
       var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(txDataHex, outputIndex) {
         var _this2 = this;
 
-        var _send, P1_INIT, P1_CONTINUE, P2_UNUSED, CHUNK_SIZE, data, result, txData, i, chunk, _result, _chunk, _result2, sum, sizes, _utils$chunkBy, _utils$chunkBy2, txHash, outputNumber, amount, hmac;
+        var _send, P1_INIT, P1_CONTINUE, P2_UNUSED, CHUNK_SIZE, _data, result, txData, i, chunk, _result, _chunk, _result2, sum, sizes, _utils$chunkBy, _utils$chunkBy2, txHash, outputNumber, amount, hmac;
 
         return _regenerator2.default.wrap(function _callee5$(_context5) {
           while (1) {
@@ -327,9 +328,9 @@ var Ada = function () {
                 CHUNK_SIZE = 245;
 
                 // Initial request
-                data = _utils2.default.uint32_to_buf(outputIndex);
+                _data = _utils2.default.uint32_to_buf(outputIndex);
                 _context5.next = 10;
-                return wrapRetryStillInCall(_send)(P1_INIT, P2_UNUSED, data);
+                return wrapRetryStillInCall(_send)(P1_INIT, P2_UNUSED, _data);
 
               case 10:
                 result = _context5.sent;
@@ -1109,7 +1110,7 @@ exports.default = Ada;
 exports.utils = _utils2.default;
 
 }).call(this,require("buffer").Buffer)
-},{"./utils":2,"@ledgerhq/hw-transport":10,"babel-runtime/helpers/asyncToGenerator":17,"babel-runtime/helpers/classCallCheck":18,"babel-runtime/helpers/createClass":19,"babel-runtime/helpers/defineProperty":20,"babel-runtime/helpers/slicedToArray":21,"babel-runtime/regenerator":25,"buffer":28}],2:[function(require,module,exports){
+},{"./utils":2,"babel-runtime/helpers/asyncToGenerator":17,"babel-runtime/helpers/classCallCheck":18,"babel-runtime/helpers/createClass":19,"babel-runtime/helpers/defineProperty":20,"babel-runtime/helpers/slicedToArray":21,"babel-runtime/regenerator":25,"buffer":28}],2:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 
@@ -1571,18 +1572,21 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var devices = {
   blue: {
     id: "blue",
-    productName: "Ledger Blue",
-    usbProductId: 0x0000
+    productName: "Ledger Blue",
+    usbProductId: 0x0000,
+    usbOnly: true
   },
   nanoS: {
     id: "nanoS",
-    productName: "Ledger Nano S",
-    usbProductId: 0x0001
+    productName: "Ledger Nano S",
+    usbProductId: 0x0001,
+    usbOnly: true
   },
   nanoX: {
     id: "nanoX",
-    productName: "Ledger Nano X",
+    productName: "Ledger Nano X",
     usbProductId: 0x0004,
+    usbOnly: false,
     bluetoothSpec: [{
       // this is the legacy one (prototype version). we will eventually drop it.
       serviceUuid: "d973f2e0-b19e-11e2-9e96-0800200c9a66",
@@ -1651,6 +1655,11 @@ var getBluetoothServiceUuids = exports.getBluetoothServiceUuids = function getBl
 var getInfosForServiceUuid = exports.getInfosForServiceUuid = function getInfosForServiceUuid(uuid) {
   return serviceUuidToInfos[uuid.toLowerCase()];
 };
+
+/**
+ *
+ */
+
 
 /**
  *
@@ -1790,7 +1799,7 @@ function destroyCircular(from, seen) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.StatusCodes = exports.DBNotReset = exports.DBWrongPassword = exports.NoDBPathGiven = exports.GenuineCheckFailed = exports.PairingFailed = exports.SyncError = exports.FeeRequired = exports.FeeNotLoaded = exports.CantScanQRCode = exports.ETHAddressNonEIP = exports.WrongDeviceForAccount = exports.WebsocketConnectionFailed = exports.WebsocketConnectionError = exports.UserRefusedOnDevice = exports.UserRefusedAllowManager = exports.UserRefusedFirmwareUpdate = exports.UserRefusedAddress = exports.UpdateYourApp = exports.UnexpectedBootloader = exports.TimeoutTagged = exports.PasswordIncorrectError = exports.PasswordsDontMatchError = exports.NotEnoughBalanceBecauseDestinationNotCreated = exports.NotEnoughBalance = exports.NoAddressesFound = exports.NetworkDown = exports.ManagerUninstallBTCDep = exports.ManagerNotEnoughSpaceError = exports.ManagerDeviceLockedError = exports.ManagerAppRelyOnBTCError = exports.ManagerAppAlreadyInstalledError = exports.LedgerAPINotAvailable = exports.LedgerAPIErrorWithMessage = exports.LedgerAPIError = exports.UnknownMCU = exports.LatestMCUInstalledError = exports.InvalidAddressBecauseDestinationIsAlsoSource = exports.InvalidAddress = exports.HardResetFail = exports.FeeEstimationFailed = exports.EnpointConfigError = exports.DisconnectedDeviceDuringOperation = exports.DisconnectedDevice = exports.DeviceSocketNoBulkStatus = exports.DeviceSocketFail = exports.DeviceNameInvalid = exports.DeviceOnDashboardExpected = exports.DeviceNotGenuineError = exports.DeviceGenuineSocketEarlyClose = exports.DeviceAppVerifyNotSupported = exports.CantOpenDevice = exports.BtcUnmatchedApp = exports.BluetoothRequired = exports.AccountNameRequiredError = undefined;
+exports.StatusCodes = exports.DBNotReset = exports.DBWrongPassword = exports.NoDBPathGiven = exports.GenuineCheckFailed = exports.PairingFailed = exports.SyncError = exports.FeeRequired = exports.FeeNotLoaded = exports.CantScanQRCode = exports.ETHAddressNonEIP = exports.WrongDeviceForAccount = exports.WebsocketConnectionFailed = exports.WebsocketConnectionError = exports.TransportInterfaceNotAvailable = exports.TransportOpenUserCancelled = exports.UserRefusedOnDevice = exports.UserRefusedAllowManager = exports.UserRefusedFirmwareUpdate = exports.UserRefusedAddress = exports.UserRefusedDeviceNameChange = exports.UpdateYourApp = exports.UnexpectedBootloader = exports.TimeoutTagged = exports.PasswordIncorrectError = exports.PasswordsDontMatchError = exports.NotEnoughBalanceBecauseDestinationNotCreated = exports.NotEnoughBalance = exports.NoAddressesFound = exports.NetworkDown = exports.ManagerUninstallBTCDep = exports.ManagerNotEnoughSpaceError = exports.ManagerDeviceLockedError = exports.ManagerAppRelyOnBTCError = exports.ManagerAppAlreadyInstalledError = exports.LedgerAPINotAvailable = exports.LedgerAPIErrorWithMessage = exports.LedgerAPIError = exports.UnknownMCU = exports.LatestMCUInstalledError = exports.InvalidAddressBecauseDestinationIsAlsoSource = exports.InvalidAddress = exports.HardResetFail = exports.FeeEstimationFailed = exports.EnpointConfigError = exports.DisconnectedDeviceDuringOperation = exports.DisconnectedDevice = exports.DeviceSocketNoBulkStatus = exports.DeviceSocketFail = exports.DeviceNameInvalid = exports.DeviceOnDashboardExpected = exports.DeviceNotGenuineError = exports.DeviceGenuineSocketEarlyClose = exports.DeviceAppVerifyNotSupported = exports.CantOpenDevice = exports.BtcUnmatchedApp = exports.BluetoothRequired = exports.AccountNameRequiredError = undefined;
 exports.TransportError = TransportError;
 exports.getAltStatusMessage = getAltStatusMessage;
 exports.TransportStatusError = TransportStatusError;
@@ -1835,10 +1844,13 @@ var PasswordIncorrectError = exports.PasswordIncorrectError = (0, _helpers.creat
 var TimeoutTagged = exports.TimeoutTagged = (0, _helpers.createCustomErrorClass)("TimeoutTagged");
 var UnexpectedBootloader = exports.UnexpectedBootloader = (0, _helpers.createCustomErrorClass)("UnexpectedBootloader");
 var UpdateYourApp = exports.UpdateYourApp = (0, _helpers.createCustomErrorClass)("UpdateYourApp");
+var UserRefusedDeviceNameChange = exports.UserRefusedDeviceNameChange = (0, _helpers.createCustomErrorClass)("UserRefusedDeviceNameChange");
 var UserRefusedAddress = exports.UserRefusedAddress = (0, _helpers.createCustomErrorClass)("UserRefusedAddress");
 var UserRefusedFirmwareUpdate = exports.UserRefusedFirmwareUpdate = (0, _helpers.createCustomErrorClass)("UserRefusedFirmwareUpdate");
 var UserRefusedAllowManager = exports.UserRefusedAllowManager = (0, _helpers.createCustomErrorClass)("UserRefusedAllowManager");
 var UserRefusedOnDevice = exports.UserRefusedOnDevice = (0, _helpers.createCustomErrorClass)("UserRefusedOnDevice"); // TODO rename because it's just for transaction refusal
+var TransportOpenUserCancelled = exports.TransportOpenUserCancelled = (0, _helpers.createCustomErrorClass)("TransportOpenUserCancelled");
+var TransportInterfaceNotAvailable = exports.TransportInterfaceNotAvailable = (0, _helpers.createCustomErrorClass)("TransportInterfaceNotAvailable");
 var WebsocketConnectionError = exports.WebsocketConnectionError = (0, _helpers.createCustomErrorClass)("WebsocketConnectionError");
 var WebsocketConnectionFailed = exports.WebsocketConnectionFailed = (0, _helpers.createCustomErrorClass)("WebsocketConnectionFailed");
 var WrongDeviceForAccount = exports.WrongDeviceForAccount = (0, _helpers.createCustomErrorClass)("WrongDeviceForAccount");
@@ -2060,7 +2072,8 @@ var TransportU2F = function (_Transport) {
      */
 
 
-    // this transport is not discoverable but we are going to guess if it is here with isSupported()
+    /*
+     */
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_) {
         var _openTimeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
@@ -2085,6 +2098,10 @@ var TransportU2F = function (_Transport) {
 
       return open;
     }()
+
+    /*
+     */
+
   }]);
 
   function TransportU2F() {
@@ -2097,6 +2114,13 @@ var TransportU2F = function (_Transport) {
     transportInstances.push(_this);
     return _this;
   }
+
+  /**
+   * Exchange with the device using APDU protocol.
+   * @param apdu
+   * @returns a promise of apdu response
+   */
+
 
   _createClass(TransportU2F, [{
     key: "exchange",
@@ -2147,11 +2171,19 @@ var TransportU2F = function (_Transport) {
 
       return exchange;
     }()
+
+    /**
+     */
+
   }, {
     key: "setScrambleKey",
     value: function setScrambleKey(scrambleKey) {
       this.scrambleKey = Buffer.from(scrambleKey, "ascii");
     }
+
+    /**
+     */
+
   }, {
     key: "setUnwrap",
     value: function setUnwrap(unwrap) {
@@ -2171,9 +2203,12 @@ var TransportU2F = function (_Transport) {
 TransportU2F.isSupported = _u2fApi.isSupported;
 
 TransportU2F.list = function () {
-  return (0, _u2fApi.isSupported)().then(function (supported) {
-    return supported ? [null] : [];
-  });
+  return (
+    // this transport is not discoverable but we are going to guess if it is here with isSupported()
+    (0, _u2fApi.isSupported)().then(function (supported) {
+      return supported ? [null] : [];
+    })
+  );
 };
 
 TransportU2F.listen = function (observer) {
@@ -2217,6 +2252,8 @@ var _hidFraming2 = _interopRequireDefault(_hidFraming);
 
 var _devices = require("@ledgerhq/devices");
 
+var _errors = require("@ledgerhq/errors");
+
 var _webusb = require("./webusb");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -2255,8 +2292,30 @@ var TransportWebUSB = function (_Transport) {
     return _this;
   }
 
+  /**
+   * Check if WebUSB transport is supported.
+   */
+
+
+  /**
+   * List the WebUSB devices that was previously authorized.
+   */
+
+
+  /**
+   * Actively listen to WebUSB devices and emit ONE device that was selected by the native permission UI.
+   *
+   * Important: it must be called in the context of a UI click!
+   */
+
+
   _createClass(TransportWebUSB, [{
     key: "close",
+
+
+    /**
+     * Release the transport device
+     */
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -2292,11 +2351,23 @@ var TransportWebUSB = function (_Transport) {
 
       return close;
     }()
+
+    /**
+     * Exchange with the device using APDU protocol.
+     * @param apdu
+     * @returns a promise of apdu response
+     */
+
   }, {
     key: "setScrambleKey",
     value: function setScrambleKey() {}
   }], [{
     key: "open",
+
+
+    /**
+     * Create a Ledger transport with a USBDevice
+     */
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(device) {
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -2320,18 +2391,32 @@ var TransportWebUSB = function (_Transport) {
                 return device.reset();
 
               case 7:
-                _context2.next = 9;
+                _context2.prev = 7;
+                _context2.next = 10;
                 return device.claimInterface(interfaceNumber);
 
-              case 9:
+              case 10:
+                _context2.next = 17;
+                break;
+
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](7);
+                _context2.next = 16;
+                return device.close();
+
+              case 16:
+                throw new _errors.TransportInterfaceNotAvailable(_context2.t0.message);
+
+              case 17:
                 return _context2.abrupt("return", new TransportWebUSB(device));
 
-              case 10:
+              case 18:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee2, this, [[7, 12]]);
       }));
 
       function open(_x) {
@@ -2356,6 +2441,8 @@ TransportWebUSB.listen = function (observer) {
       observer.next({ type: "add", descriptor: device, deviceModel: deviceModel });
       observer.complete();
     }
+  }, function (error) {
+    observer.error(new _errors.TransportOpenUserCancelled(error.message));
   });
   function unsubscribe() {
     unsubscribed = true;
@@ -2445,7 +2532,7 @@ var _initialiseProps = function _initialiseProps() {
 exports.default = TransportWebUSB;
 
 }).call(this,require("buffer").Buffer)
-},{"./webusb":9,"@ledgerhq/devices":4,"@ledgerhq/devices/lib/hid-framing":3,"@ledgerhq/hw-transport":10,"buffer":28}],9:[function(require,module,exports){
+},{"./webusb":9,"@ledgerhq/devices":4,"@ledgerhq/devices/lib/hid-framing":3,"@ledgerhq/errors":6,"@ledgerhq/hw-transport":10,"buffer":28}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15654,7 +15741,11 @@ var init = async function init() {
     bridge = new _yoroiLedgerBridge2.default(transportGenerator);
 
     window.onload = function (e) {
-      document.getElementById("versionButton").addEventListener('click', async function () {
+      var button = document.getElementById("versionButton");
+      if (!button) {
+        return;
+      }
+      button.addEventListener('click', async function () {
         return logConnectedDeviceVersion();
       });
     };
