@@ -77,6 +77,7 @@ var ErrorCodes = exports.ErrorCodes = {
   ERR_INVALID_BIP_PATH: 0x6e08,
   ERR_REJECTED_BY_USER: 0x6e09,
   ERR_REJECTED_BY_POLICY: 0x6e10,
+  ERR_DEVICE_LOCKED: 0x6e11,
 
   // Not thrown by ledger-app-cardano itself but other apps
   ERR_CLA_NOT_SUPPORTED: 0x6e00
@@ -84,7 +85,7 @@ var ErrorCodes = exports.ErrorCodes = {
 
 var GH_ERRORS_LINK = "https://github.com/cardano-foundation/ledger-app-cardano/blob/master/src/errors.h";
 
-var ErrorMsgs = (_ErrorMsgs = {}, (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_INVALID_DATA, "Invalid data supplied to Ledger"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_INVALID_BIP_PATH, "Invalid derivation path supplied to Ledger"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_REJECTED_BY_USER, "Action rejected by user"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_REJECTED_BY_POLICY, "Action rejected by Ledger's security policy"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_CLA_NOT_SUPPORTED, "Wrong Ledger app"), _ErrorMsgs);
+var ErrorMsgs = (_ErrorMsgs = {}, (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_INVALID_DATA, "Invalid data supplied to Ledger"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_INVALID_BIP_PATH, "Invalid derivation path supplied to Ledger"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_REJECTED_BY_USER, "Action rejected by user"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_REJECTED_BY_POLICY, "Action rejected by Ledger's security policy"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_DEVICE_LOCKED, "Device is locked"), (0, _defineProperty3.default)(_ErrorMsgs, ErrorCodes.ERR_CLA_NOT_SUPPORTED, "Wrong Ledger app"), _ErrorMsgs);
 
 var getErrorDescription = exports.getErrorDescription = function getErrorDescription(statusCode) {
   var statusCodeHex = "0x" + statusCode.toString(16);
