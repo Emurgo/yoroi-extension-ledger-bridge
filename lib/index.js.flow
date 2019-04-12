@@ -18,11 +18,6 @@ import EventEmitter from 'events';
 const HARDENED = 0x80000000;
 const PURPOSE = 44;
 const COIN_TYPE = 1815; // Cardano
-export const BIP44_HARDENED_CARDANO_FIRST_ACCOUNT_SUB_PATH: BIP32Path = [
-  HARDENED + PURPOSE,
-  HARDENED + COIN_TYPE,
-  HARDENED + 0, // FIRST_ACCOUNT
-];
 
 const BRIDGE_URL = 'https://emurgo.github.io/yoroi-extension-ledger-bridge';
 export const YOROI_LEDGER_BRIDGE_IFRAME_NAME = 'YOROI-LEDGER-BRIDGE-IFRAME';
@@ -214,7 +209,8 @@ function _prepareError(payload) {
 }
 
 /**
- * See BIP44 for explanation
+ * Get the Bip44 path required to specify an address
+ *
  * https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
  * Ledger (according to current security rules) denies any derivation path which does not start with
  *  `[HD+44, HD+1815, HD+(account), chain, address]`
@@ -234,6 +230,24 @@ export function makeCardanoBIP44Path (
     HARDENED + account,
     chain,
     address
+  ];
+}
+
+/**
+ * Get the Bip44 path required to create an account
+ *
+ * See BIP44 for explanation
+ * https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#examples
+ * Ledger (according to current security rules) denies any derivation path which does not start with
+ *  `[HD+44, HD+1815, HD+(account)]`
+ */
+export function makeCardanoAccountBIP44Path (
+  account: number,
+): BIP32Path {
+  return [
+    HARDENED + PURPOSE,
+    HARDENED + COIN_TYPE,
+    HARDENED + account
   ];
 }
 
